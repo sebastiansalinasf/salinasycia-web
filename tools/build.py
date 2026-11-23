@@ -59,6 +59,23 @@ VISION = ("Ser el estudio de cabecera de las familias y empresas que confían en
 NAV = [("/areas/", "Áreas"), ("/equipo/", "Equipo"), ("/estudio/", "El Estudio"), ("/blog/", "Blog"), ("/contacto/", "Contacto")]
 
 
+LANG = "es"
+P = ""
+
+
+def U(path):
+    return BASE + "/" + P + path.lstrip("/")
+
+
+def inicio(r):
+    return (r + P) or "./"
+
+
+def otro_idioma(r, path):
+    destino = path.lstrip("/") if LANG == "en" else "en/" + path.lstrip("/")
+    return (r + destino) or "./"
+
+
 def e(t):
     return html.escape(t, quote=True)
 
@@ -69,24 +86,29 @@ def head(title, desc, path, jsonld=None):
     if jsonld:
         ld = '<script type="application/ld+json">\n' + json.dumps(jsonld, ensure_ascii=False, indent=1) + "\n</script>"
     return f"""<!DOCTYPE html>
-<html lang="es-CL">
+<html lang="{"en" if LANG == "en" else "es-CL"}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{e(title)}</title>
   <meta name="description" content="{e(desc)}" />
   <meta name="robots" content="{robots}" />
-  <link rel="canonical" href="{BASE}{path}" />
+  <link rel="canonical" href="{U(path)}" />
+  <link rel="alternate" hreflang="es-CL" href="{BASE}{path}" />
+  <link rel="alternate" hreflang="en" href="{BASE}/en{path}" />
+  <link rel="alternate" hreflang="x-default" href="{BASE}{path}" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="{e(title)}" />
   <meta property="og:description" content="{e(desc)}" />
-  <meta property="og:url" content="{BASE}{path}" />
-  <meta property="og:locale" content="es_CL" />
+  <meta property="og:url" content="{U(path)}" />
+  <meta property="og:locale" content="{"en_US" if LANG == "en" else "es_CL"}" />
+  <meta property="og:locale:alternate" content="{"es_CL" if LANG == "en" else "en_US"}" />
   <meta property="og:image" content="{BASE}/assets/og-salinasycia.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="theme-color" content="#06132A" />
+  <link rel="icon" href="{rel(path)}favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{rel(path)}assets/styles.css" />
@@ -97,27 +119,29 @@ def head(title, desc, path, jsonld=None):
 def rel(path):
     """Prefijo relativo para que el sitio funcione en vista previa y en producción."""
     depth = path.strip("/").count("/") + 1 if path.strip("/") else 0
+    if LANG == "en":
+        depth += 1
     return "../" * depth
 
 
 def header(path):
     r = rel(path)
-    items = "".join(f'<li><a class="hover:text-white" href="{r}{h.strip("/")}/">{t}</a></li>' for h, t in NAV)
-    items_movil = "".join(f'<li><a class="block rounded-lg px-3 py-2 hover:bg-white/5 hover:text-white" href="{r}{h.strip("/")}/">{t}</a></li>' for h, t in NAV)
+    items = "".join(f'<li><a class="hover:text-white" href="{r}{P}{h.strip("/")}/">{t}</a></li>' for h, t in NAV)
+    items_movil = "".join(f'<li><a class="block rounded-lg px-3 py-2 hover:bg-white/5 hover:text-white" href="{r}{P}{h.strip("/")}/">{t}</a></li>' for h, t in NAV)
     return f"""
 <body class="bg-paper font-sans text-navy-900 antialiased">
 {'<div class="bg-copper-500 py-1.5 text-center text-xs font-semibold tracking-wider text-white">BORRADOR · Vista previa privada, no publicada</div>' if BORRADOR else ''}
 <header class="sticky top-0 z-50 border-b border-white/10 bg-navy-950/95 backdrop-blur">
   <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8" aria-label="Principal">
-    <a href="{r or './'}" class="leading-none text-white">
+    <a href="{inicio(r)}" class="leading-none text-white">
       <span class="font-serif text-2xl">Salinas <span class="text-copper-400">&amp;</span> Cía.</span>
       <span class="mt-1 block text-[0.62rem] font-semibold uppercase tracking-[0.35em] text-slate2-400">Abogados</span>
     </a>
-    <ul class="hidden gap-8 text-sm text-slate2-300 md:flex">{items}</ul>
-    <a href="{r}contacto/" class="hidden rounded-full border border-copper-500/60 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-copper-300 hover:bg-copper-500 hover:text-white md:inline-block">Conversemos</a>
+    <ul class="hidden items-center gap-8 text-sm text-slate2-300 md:flex">{items}<li><a class="rounded border border-white/20 px-2 py-0.5 text-xs hover:text-white" href="{otro_idioma(r, path)}" hreflang="{"es" if LANG == "en" else "en"}">{"ES" if LANG == "en" else "EN"}</a></li></ul>
+    <a href="{r}{P}contacto/" class="hidden rounded-full border border-copper-500/60 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-copper-300 hover:bg-copper-500 hover:text-white md:inline-block">Conversemos</a>
     <details class="relative md:hidden">
       <summary class="cursor-pointer list-none rounded-full border border-copper-500/60 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-copper-300">Menú</summary>
-      <ul class="absolute right-0 mt-3 w-56 space-y-1 rounded-2xl bg-navy-900 p-4 text-sm text-slate2-300 shadow-xl ring-1 ring-white/10">{items_movil}</ul>
+      <ul class="absolute right-0 mt-3 w-56 space-y-1 rounded-2xl bg-navy-900 p-4 text-sm text-slate2-300 shadow-xl ring-1 ring-white/10">{items_movil}<li><a class="block rounded-lg px-3 py-2 hover:bg-white/5 hover:text-white" href="{otro_idioma(r, path)}">{"Español" if LANG == "en" else "English"}</a></li></ul>
     </details>
   </nav>
 </header>
@@ -152,7 +176,7 @@ def footer(path):
         <li><a class="hover:text-copper-300" href="{E['instagram']}" target="_blank" rel="noopener">Instagram @salinasyciaabogados ↗</a></li>
         <li><a class="hover:text-copper-300" href="https://www.sebastiansalinas.cl/" target="_blank" rel="noopener">sebastiansalinas.cl ↗</a></li>
         <li><a class="hover:text-copper-300" href="https://dunora.ai/" target="_blank" rel="noopener">Dunora ↗</a></li>
-        <li><a class="hover:text-copper-300" href="{r}privacidad/">Política de privacidad</a></li>
+        <li><a class="hover:text-copper-300" href="{r}{P}privacidad/">Política de privacidad</a></li>
       </ul>
     </div>
   </div>
@@ -193,19 +217,19 @@ def portada():
     path = "/"
     r = rel(path)
     areas = "".join(f"""
-      <a href="{r}areas/{s}/" class="group rounded-2xl border border-slate2-100 bg-white p-7 transition hover:border-copper-400 hover:shadow-lg">
+      <a href="{r}{P}areas/{s}/" class="group rounded-2xl border border-slate2-100 bg-white p-7 transition hover:border-copper-400 hover:shadow-lg">
         <h3 class="font-serif text-2xl leading-snug text-navy-900">{n}</h3>
         <p class="mt-3 text-sm leading-relaxed text-navy-800/80">{d}</p>
         <span class="mt-5 inline-block text-xs font-semibold uppercase tracking-wider text-copper-600 group-hover:text-copper-500">Ver área →</span>
       </a>""" for s, n, d in AREAS)
-    otras = " · ".join(f'<a class="hover:text-copper-600" href="{r}areas/{s}/">{n}</a>' for s, n, d in AREAS[6:])
+    otras = " · ".join(f'<a class="hover:text-copper-600" href="{r}{P}areas/{s}/">{n}</a>' for s, n, d in AREAS[6:])
 
     def tarjeta(m):
-        foto = (f'<img src="{m["foto"]}" alt="{e(m["nombre"])}, {m["cargo"].lower()} de Salinas &amp; Cía. Abogados" width="976" height="1300" loading="lazy" class="aspect-[4/5] w-full rounded-xl object-cover object-top" />'
+        foto = (f'<img src="{r}{m["foto"]}" alt="{e(m["nombre"])}, {m["cargo"].lower()} de Salinas &amp; Cía. Abogados" width="976" height="1300" loading="lazy" class="aspect-[4/5] w-full rounded-xl object-cover object-top" />'
                 if m["foto"] else
                 f'<div class="relative flex aspect-[4/5] w-full items-center justify-center rounded-xl bg-navy-900 font-serif text-5xl text-copper-300" aria-hidden="true">{iniciales(m["nombre"])}<span class="absolute bottom-4 font-sans text-xs text-slate2-400">Foto pendiente</span></div>')
         return f"""
-      <a href="{r}equipo/{m['slug']}/" class="group block">
+      <a href="{r}{P}equipo/{m['slug']}/" class="group block">
         {foto}
         <p class="eyebrow mt-5 text-copper-600">{m['cargo']}</p>
         <h3 class="mt-1 font-serif text-2xl group-hover:text-copper-600">{m['nombre']}</h3>
@@ -223,14 +247,14 @@ def portada():
       <h1 class="mt-6 font-serif text-5xl leading-[1.05] sm:text-6xl">Asesoría jurídica integral para empresas, familias y personas</h1>
       <p class="mt-6 max-w-xl text-lg leading-relaxed text-slate2-300">Desde 2011 acompañamos a empresarios, empresas familiares y personas en sus decisiones legales: sociedades, contratos, patrimonio inmobiliario, conflictos y relación con el Estado. Un mismo equipo, con abogados especialistas cuando el asunto lo requiere.</p>
       <div class="mt-10 flex flex-wrap gap-4">
-        <a href="{r}contacto/" class="rounded-full bg-copper-500 px-6 py-3 text-sm font-semibold text-white hover:bg-copper-600">Conversemos</a>
-        <a href="{r}areas/" class="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:border-copper-400">Ver áreas de práctica</a>
+        <a href="{r}{P}contacto/" class="rounded-full bg-copper-500 px-6 py-3 text-sm font-semibold text-white hover:bg-copper-600">Conversemos</a>
+        <a href="{r}{P}areas/" class="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:border-copper-400">Ver áreas de práctica</a>
       </div>
     </div>
     <div class="lg:col-span-5">
       <div class="relative mx-auto max-w-sm">
         <div aria-hidden="true" class="absolute -inset-3 rounded-[2rem] border border-copper-500/30"></div>
-        <img src="assets/edificio-kennedy-5600-vertical.webp" alt="Edificio de oficinas en Av. Presidente Kennedy 5600, Vitacura, donde se ubica Salinas &amp; Cía. Abogados" width="900" height="1200" fetchpriority="high" class="relative aspect-[4/5] w-full rounded-[1.6rem] object-cover ring-1 ring-white/10" />
+        <img src="{r}assets/edificio-kennedy-5600-vertical.webp" alt="Edificio de oficinas en Av. Presidente Kennedy 5600, Vitacura, donde se ubica Salinas &amp; Cía. Abogados" width="900" height="1200" fetchpriority="high" class="relative aspect-[4/5] w-full rounded-[1.6rem] object-cover ring-1 ring-white/10" />
       </div>
     </div>
   </div>
@@ -248,7 +272,7 @@ def portada():
     <h2 class="mt-4 max-w-2xl font-serif text-4xl leading-tight sm:text-5xl">Cómo podemos ayudarle</h2>
     <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{areas}
     </div>
-    <a href="{r}areas/" class="mt-10 inline-block rounded-full border border-navy-900/20 px-6 py-3 text-sm font-semibold hover:border-copper-500 hover:text-copper-600">Ver todas las áreas</a>
+    <a href="{r}{P}areas/" class="mt-10 inline-block rounded-full border border-navy-900/20 px-6 py-3 text-sm font-semibold hover:border-copper-500 hover:text-copper-600">Ver todas las áreas</a>
   </div>
 </section>
 
@@ -258,7 +282,7 @@ def portada():
     <div class="lg:col-span-5">
       <p class="eyebrow text-copper-600">Cómo trabajamos</p>
       <h2 class="mt-4 font-serif text-4xl leading-tight">Entender antes de decidir</h2>
-      <img src="assets/edificio-kennedy-5600-detalle.webp" alt="Fachada del edificio en Av. Presidente Kennedy 5600, Vitacura" width="900" height="887" loading="lazy" class="mt-10 hidden w-full rounded-2xl object-cover lg:block" />
+      <img src="{r}assets/edificio-kennedy-5600-detalle.webp" alt="Fachada del edificio en Av. Presidente Kennedy 5600, Vitacura" width="900" height="887" loading="lazy" class="mt-10 hidden w-full rounded-2xl object-cover lg:block" />
     </div>
     <div class="space-y-8 lg:col-span-7">
       <p class="text-lg leading-relaxed text-navy-800">Trabajamos con una idea simple: el cliente debe entender su situación legal y sus opciones antes de decidir.</p>
@@ -308,7 +332,7 @@ def portada():
     </div>
     <div class="lg:col-span-7">
       <img src="{r}assets/edificio-kennedy-5600-horizontal.webp" alt="Edificio en Av. Presidente Kennedy 5600, Vitacura" width="1600" height="900" loading="lazy" class="w-full rounded-2xl object-cover ring-1 ring-white/10" />
-      <a href="{r}contacto/" class="mt-8 inline-block rounded-full bg-copper-500 px-8 py-4 text-sm font-semibold text-white hover:bg-copper-600">Escribir al estudio</a>
+      <a href="{r}{P}contacto/" class="mt-8 inline-block rounded-full bg-copper-500 px-8 py-4 text-sm font-semibold text-white hover:bg-copper-600">Escribir al estudio</a>
     </div>
   </div>
 </section>"""
@@ -335,16 +359,16 @@ def pagina(path, titulo, desc, cuerpo, jsonld=None):
 
 def migas(r, items):
     """items: lista de (texto, ruta relativa o None)."""
-    partes = [f'<a class="hover:text-copper-300" href="{r or "./"}">Inicio</a>']
+    partes = [f'<a class="hover:text-copper-300" href="{inicio(r)}">Inicio</a>']
     for t, h in items:
-        partes.append(f'<a class="hover:text-copper-300" href="{r}{h}">{t}</a>' if h else f'<span class="text-white">{t}</span>')
+        partes.append(f'<a class="hover:text-copper-300" href="{r}{P}{h}">{t}</a>' if h else f'<span class="text-white">{t}</span>')
     return '<nav aria-label="Migas de pan" class="text-xs text-slate2-400">' + ' <span aria-hidden="true">/</span> '.join(partes) + '</nav>'
 
 
 def ld_migas(items):
-    lst = [{"@type": "ListItem", "position": 1, "name": "Inicio", "item": BASE + "/"}]
+    lst = [{"@type": "ListItem", "position": 1, "name": "Inicio", "item": BASE + "/" + P}]
     for i, (t, h) in enumerate(items, start=2):
-        lst.append({"@type": "ListItem", "position": i, "name": t, "item": BASE + "/" + h})
+        lst.append({"@type": "ListItem", "position": i, "name": t, "item": BASE + "/" + P + h})
     return {"@type": "BreadcrumbList", "itemListElement": lst}
 
 
@@ -367,7 +391,7 @@ def cta(r):
   <div class="mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-6 sm:flex-row sm:items-center lg:px-8">
     <div><h2 class="font-serif text-3xl sm:text-4xl">¿Necesita orientación sobre su caso?</h2>
     <p class="mt-3 text-slate2-300">Cuéntenos brevemente su consulta y le responderemos a la brevedad.</p></div>
-    <a href="{r}contacto/" class="shrink-0 rounded-full bg-copper-500 px-8 py-4 text-sm font-semibold text-white hover:bg-copper-600">Escribir al estudio</a>
+    <a href="{r}{P}contacto/" class="shrink-0 rounded-full bg-copper-500 px-8 py-4 text-sm font-semibold text-white hover:bg-copper-600">Escribir al estudio</a>
   </div>
 </section>"""
 
@@ -386,13 +410,13 @@ def pagina_area(slug):
     if a.get("vinculado"):
         m = MIEMBRO[a["vinculado"]]
         vinc = f"""<div class="mt-10 rounded-2xl border border-slate2-100 bg-white p-6"><p class="eyebrow text-copper-600">Abogado asociado vinculado a esta materia</p>
-        <a href="{r}equipo/{m['slug']}/" class="mt-2 block font-serif text-2xl hover:text-copper-600">{m['nombre']} →</a></div>"""
+        <a href="{r}{P}equipo/{m['slug']}/" class="mt-2 block font-serif text-2xl hover:text-copper-600">{m['nombre']} →</a></div>"""
     posts = [p for p in POSTS if p["area"] == slug]
-    art = f'<div class="mt-10 rounded-2xl border border-dashed border-slate2-300 p-6"><p class="eyebrow text-copper-600">Artículos relacionados</p><p class="mt-2 text-navy-800/80">Próximamente publicaremos artículos sobre esta materia. <a class="font-semibold text-copper-600 hover:text-copper-500" href="{r}blog/">Ir al blog →</a></p></div>'
+    art = f'<div class="mt-10 rounded-2xl border border-dashed border-slate2-300 p-6"><p class="eyebrow text-copper-600">Artículos relacionados</p><p class="mt-2 text-navy-800/80">Próximamente publicaremos artículos sobre esta materia. <a class="font-semibold text-copper-600 hover:text-copper-500" href="{r}{P}blog/">Ir al blog →</a></p></div>'
     if posts:
         art = '<div class="mt-10"><p class="eyebrow text-copper-600">Artículos relacionados</p><ul class="mt-3 space-y-2">' + "".join(
-            f'<li><a class="font-serif text-xl hover:text-copper-600" href="{r}blog/{p["slug"]}/">{p["titulo"]} →</a></li>' for p in posts) + "</ul></div>"
-    otras = "".join(f'<li><a class="hover:text-copper-600" href="{r}areas/{s}/">{n}</a></li>' for s, n, d in AREAS if s != slug)
+            f'<li><a class="font-serif text-xl hover:text-copper-600" href="{r}{P}blog/{p["slug"]}/">{p["titulo"]} →</a></li>' for p in posts) + "</ul></div>"
+    otras = "".join(f'<li><a class="hover:text-copper-600" href="{r}{P}areas/{s}/">{n}</a></li>' for s, n, d in AREAS if s != slug)
     cuerpo = cabecera(r, "Área de práctica", a["h1"], None, [("Áreas", "areas/"), (NOMBRE_AREA[slug], None)]) + f"""
 <section class="py-20 sm:py-24">
   <div class="mx-auto grid max-w-6xl gap-14 px-6 lg:grid-cols-12 lg:px-8">
@@ -408,14 +432,14 @@ def pagina_area(slug):
       <div class="sticky top-28 rounded-2xl bg-white p-7 ring-1 ring-slate2-100">
         <p class="eyebrow text-copper-600">Otras áreas</p>
         <ul class="mt-4 space-y-2 text-sm text-navy-800">{otras}</ul>
-        <a href="{r}contacto/" class="mt-8 block rounded-full bg-copper-500 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-copper-600">Consultar sobre esta materia</a>
+        <a href="{r}{P}contacto/" class="mt-8 block rounded-full bg-copper-500 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-copper-600">Consultar sobre esta materia</a>
       </div>
     </aside>
   </div>
 </section>""" + cta(r)
     ld = {"@context": "https://schema.org", "@graph": [
         {"@type": "Service", "name": a["h1"], "serviceType": a["h1"], "description": a["intro"],
-         "provider": {"@id": BASE + "/#estudio"}, "areaServed": "Chile", "url": BASE + path},
+         "provider": {"@id": BASE + "/#estudio"}, "areaServed": "Chile", "url": U(path)},
         {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": ans}} for q, ans in a["faq"]]},
         ld_migas([("Áreas de práctica", "areas/"), (NOMBRE_AREA[slug], f"areas/{slug}/")])]}
     return pagina(path, a["titulo_seo"], a["desc"], cuerpo, ld)
@@ -425,7 +449,7 @@ def pagina_areas():
     path = "/areas/"
     r = rel(path)
     tarjetas = "".join(f"""
-      <a href="{r}areas/{s}/" class="group rounded-2xl border border-slate2-100 bg-white p-7 transition hover:border-copper-400 hover:shadow-lg">
+      <a href="{r}{P}areas/{s}/" class="group rounded-2xl border border-slate2-100 bg-white p-7 transition hover:border-copper-400 hover:shadow-lg">
         <h2 class="font-serif text-2xl leading-snug">{n}</h2>
         <p class="mt-3 text-sm leading-relaxed text-navy-800/80">{d}</p>
         <span class="mt-5 inline-block text-xs font-semibold uppercase tracking-wider text-copper-600">Ver área →</span>
@@ -448,7 +472,7 @@ def pagina_equipo():
     r = rel(path)
     socio = EQUIPO[0]
     asoc = "".join(f"""
-      <a href="{r}equipo/{m['slug']}/" class="group grid gap-6 rounded-2xl bg-white p-6 ring-1 ring-slate2-100 sm:grid-cols-3">
+      <a href="{r}{P}equipo/{m['slug']}/" class="group grid gap-6 rounded-2xl bg-white p-6 ring-1 ring-slate2-100 sm:grid-cols-3">
         <div>{foto_o_iniciales(r, m)}</div>
         <div class="sm:col-span-2"><p class="eyebrow text-copper-600">{m['cargo']}</p><h3 class="mt-1 font-serif text-2xl group-hover:text-copper-600">{m['nombre']}</h3>
         <p class="mt-2 text-sm text-navy-800/80"><span class="font-semibold">Materias:</span> {m['materias']}</p><span class="mt-4 inline-block text-xs font-semibold uppercase tracking-wider text-copper-600">Ver perfil →</span></div>
@@ -456,7 +480,7 @@ def pagina_equipo():
     cuerpo = cabecera(r, "Equipo", "Equipo", "Un equipo de abogados con experiencia en la empresa, el sector inmobiliario y el sector público.", [("Equipo", None)]) + f"""
 <section class="py-20 sm:py-24"><div class="mx-auto max-w-6xl px-6 lg:px-8">
   <p class="eyebrow text-copper-600">Socio fundador</p>
-  <a href="{r}equipo/{socio['slug']}/" class="group mt-6 grid gap-10 sm:grid-cols-3">
+  <a href="{r}{P}equipo/{socio['slug']}/" class="group mt-6 grid gap-10 sm:grid-cols-3">
     <div>{foto_o_iniciales(r, socio)}</div>
     <div class="sm:col-span-2"><h2 class="font-serif text-4xl group-hover:text-copper-600">{socio['nombre']}</h2>
       <p class="mt-4 text-lg leading-relaxed text-navy-800">{PERFILES[socio['slug']]['bio'][0]}</p><span class="mt-6 inline-block text-xs font-semibold uppercase tracking-wider text-copper-600">Ver perfil →</span></div>
@@ -475,9 +499,9 @@ def pagina_perfil(slug):
     r = rel(path)
     bio = "".join(f'<p>{pend(x)}</p>' for x in pf["bio"])
     form = "".join(f'<li class="border-b border-slate2-100 py-3">{pend(x)}</li>' for x in pf["formacion"])
-    areas = "".join(f'<li><a class="hover:text-copper-600" href="{r}areas/{s}/">{NOMBRE_AREA[s]}</a></li>' for s in pf["areas"])
+    areas = "".join(f'<li><a class="hover:text-copper-600" href="{r}{P}areas/{s}/">{NOMBRE_AREA[s]}</a></li>' for s in pf["areas"])
     contacto = (f'<a class="hover:text-copper-600" href="mailto:{pf["correo"]}">{pf["correo"]}</a>' if pf["correo"]
-                else f'<a class="hover:text-copper-600" href="mailto:{ESTUDIO["correo"]}">{ESTUDIO["correo"]}</a> · <a class="hover:text-copper-600" href="{r}contacto/">formulario</a>')
+                else f'<a class="hover:text-copper-600" href="mailto:{ESTUDIO["correo"]}">{ESTUDIO["correo"]}</a> · <a class="hover:text-copper-600" href="{r}{P}contacto/">formulario</a>')
     enlaces = "".join(f'<li><a class="hover:text-copper-600" href="{u}" target="_blank" rel="noopener">{t} ↗</a></li>' for t, u in pf["enlaces"])
     cuerpo = cabecera(r, m["cargo"], m["nombre"], None, [("Equipo", "equipo/"), (m["nombre"], None)]) + f"""
 <section class="py-20 sm:py-24"><div class="mx-auto grid max-w-6xl gap-14 px-6 lg:grid-cols-12 lg:px-8">
@@ -493,7 +517,7 @@ def pagina_perfil(slug):
     <ul class="mt-4 text-navy-800">{form}</ul>
   </div>
 </div></section>""" + cta(r)
-    person = {"@type": "Person", "name": m["nombre"], "jobTitle": m["cargo"], "worksFor": {"@id": BASE + "/#estudio"}, "url": BASE + path}
+    person = {"@type": "Person", "name": m["nombre"], "jobTitle": m["cargo"], "worksFor": {"@id": BASE + "/#estudio"}, "url": U(path)}
     if slug == "sebastian-salinas":
         person["@id"] = "https://www.sebastiansalinas.cl/#person"
         person["sameAs"] = ["https://www.sebastiansalinas.cl/", "https://www.linkedin.com/in/sebastian-salinas-fuenzalida"]
@@ -566,7 +590,7 @@ def formulario(r):
     opciones = "".join(f'<option>{n}</option>' for s, n, d in AREAS) + "<option>Otra</option>"
     c = "mt-2 w-full rounded-lg border border-slate2-300 bg-white px-4 py-3 text-navy-900 focus:border-copper-500 focus:outline-none"
     return f"""
-<form name="contacto" method="POST" action="{r}contacto/gracias/" data-netlify="true" netlify-honeypot="sitio-web" class="space-y-5">
+<form name="contacto" method="POST" action="{r}{P}contacto/gracias/" data-netlify="true" netlify-honeypot="sitio-web" class="space-y-5">
   <input type="hidden" name="form-name" value="contacto" />
   <p class="hidden"><label>No completar: <input name="sitio-web" /></label></p>
   <div class="grid gap-5 sm:grid-cols-2">
@@ -579,7 +603,7 @@ def formulario(r):
   </div>
   <label class="block text-sm font-semibold">Mensaje<textarea required name="mensaje" rows="5" class="{c}"></textarea></label>
   <p class="text-xs text-navy-800/70">Por favor, no incluya datos sensibles ni detalles reservados de su caso en este primer contacto.</p>
-  <label class="flex items-start gap-3 text-sm"><input required type="checkbox" name="privacidad" value="acepto" class="mt-1 h-4 w-4 accent-copper-500" /><span>He leído y acepto la <a class="underline hover:text-copper-600" href="{r}privacidad/">Política de privacidad</a>.</span></label>
+  <label class="flex items-start gap-3 text-sm"><input required type="checkbox" name="privacidad" value="acepto" class="mt-1 h-4 w-4 accent-copper-500" /><span>He leído y acepto la <a class="underline hover:text-copper-600" href="{r}{P}privacidad/">Política de privacidad</a>.</span></label>
   <button type="submit" class="rounded-full bg-copper-500 px-8 py-4 text-sm font-semibold text-white hover:bg-copper-600">Enviar consulta</button>
 </form>"""
 
@@ -606,7 +630,7 @@ def pagina_gracias():
     path = "/contacto/gracias/"
     r = rel(path)
     cuerpo = cabecera(r, "Contacto", "Gracias por escribirnos", "Recibimos su consulta y le responderemos a la brevedad.", [("Contacto", "contacto/"), ("Gracias", None)]) + f"""
-<section class="py-20"><div class="mx-auto max-w-6xl px-6 lg:px-8"><a href="{r or './'}" class="rounded-full border border-navy-900/20 px-6 py-3 text-sm font-semibold hover:border-copper-500">Volver al inicio</a></div></section>"""
+<section class="py-20"><div class="mx-auto max-w-6xl px-6 lg:px-8"><a href="{inicio(r)}" class="rounded-full border border-navy-900/20 px-6 py-3 text-sm font-semibold hover:border-copper-500">Volver al inicio</a></div></section>"""
     h = pagina(path, "Gracias | Salinas & Cía. Abogados", "Recibimos su consulta.", cuerpo)
     return h.replace('content="index, follow, max-image-preview:large"', 'content="noindex"')
 
@@ -630,6 +654,10 @@ def pagina_privacidad():
 
 
 def fecha_larga(f):
+    if LANG == "en":
+        import datetime
+        d = datetime.date.fromisoformat(f)
+        return d.strftime("%B ") + str(d.day) + d.strftime(", %Y")
     meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
     a, m, d = f.split("-")
     return f"{int(d)} de {meses[int(m)-1]} de {a}"
@@ -639,7 +667,7 @@ def pagina_blog():
     path = "/blog/"
     r = rel(path)
     items = "".join(f"""
-    <a href="{r}blog/{p['slug']}/" class="group block rounded-2xl bg-white p-8 ring-1 ring-slate2-100 hover:ring-copper-400">
+    <a href="{r}{P}blog/{p['slug']}/" class="group block rounded-2xl bg-white p-8 ring-1 ring-slate2-100 hover:ring-copper-400">
       <p class="eyebrow text-copper-600">{NOMBRE_AREA[p['area']]} · {fecha_larga(p['fecha'])}</p>
       <h2 class="mt-3 font-serif text-3xl leading-snug group-hover:text-copper-600">{p['titulo']}</h2>
       <p class="mt-3 text-navy-800/80">{p['desc']}</p>
@@ -659,27 +687,172 @@ def pagina_post(p):
 <section class="py-20"><div class="mx-auto max-w-3xl px-6 lg:px-8">
   <div class="flex items-center gap-4 border-b border-slate2-100 pb-6">
     <img src="{r}assets/sebastian-salinas-fuenzalida.jpg" alt="Sebastián Salinas Fuenzalida" width="976" height="1300" class="h-14 w-14 rounded-full object-cover object-top" />
-    <p class="text-sm"><a class="font-semibold hover:text-copper-600" href="{r}equipo/sebastian-salinas/">Sebastián Salinas Fuenzalida</a><br /><span class="text-navy-800/70">Socio fundador de Salinas &amp; Cía. Abogados</span></p>
+    <p class="text-sm"><a class="font-semibold hover:text-copper-600" href="{r}{P}equipo/sebastian-salinas/">Sebastián Salinas Fuenzalida</a><br /><span class="text-navy-800/70">Socio fundador de Salinas &amp; Cía. Abogados</span></p>
   </div>
   <div class="articulo mt-8 space-y-5 text-lg leading-relaxed text-navy-800">{p['html']}</div>
   <p class="mt-10 border-t border-slate2-100 pt-6 text-sm italic text-navy-800/70">Sebastián Salinas Fuenzalida es abogado y socio fundador de Salinas &amp; Cía. Abogados. Este artículo es informativo y no reemplaza la asesoría legal para un caso concreto.</p>
   <div class="mt-6 text-sm"><p class="font-semibold">Fuentes</p><ul class="mt-2 space-y-1">{fuentes}</ul></div>
-  <p class="mt-8 text-sm">Área relacionada: <a class="font-semibold text-copper-600 hover:text-copper-500" href="{r}areas/{p['area']}/">{NOMBRE_AREA[p['area']]} →</a></p>
+  <p class="mt-8 text-sm">Área relacionada: <a class="font-semibold text-copper-600 hover:text-copper-500" href="{r}{P}areas/{p['area']}/">{NOMBRE_AREA[p['area']]} →</a></p>
 </div></section>""" + cta(r)
     ld = {"@context": "https://schema.org", "@graph": [
-        {"@type": "BlogPosting", "headline": p["titulo"], "description": p["desc"], "datePublished": p["fecha"], "inLanguage": "es-CL",
+        {"@type": "BlogPosting", "headline": p["titulo"], "description": p["desc"], "datePublished": p["fecha"], "inLanguage": "en" if LANG == "en" else "es-CL",
          "author": {"@id": "https://www.sebastiansalinas.cl/#person", "@type": "Person", "name": "Sebastián Salinas Fuenzalida"},
-         "publisher": {"@id": BASE + "/#estudio"}, "mainEntityOfPage": BASE + path, "image": BASE + "/assets/og-salinasycia.jpg"},
+         "publisher": {"@id": BASE + "/#estudio"}, "mainEntityOfPage": U(path), "image": BASE + "/assets/og-salinasycia.jpg"},
         ld_migas([("Blog", "blog/"), (p["titulo"], f"blog/{p['slug']}/")])]}
     return pagina(path, p["titulo_seo"], p["desc"], cuerpo, ld)
 
+
+
+import contenido as ES_C
+import contenido_en as EN_C
+
+_ES = dict(AREAS=list(AREAS), MISION=MISION, VISION=VISION, EQUIPO=[dict(m) for m in EQUIPO],
+           AREAS_DETALLE=ES_C.AREAS_DETALLE, PERFILES=ES_C.PERFILES, POSTS=ES_C.POSTS)
+
+
+def usar(lang):
+    """Cambia los datos globales al idioma indicado."""
+    global LANG, P, AREAS, MISION, VISION, EQUIPO, AREAS_DETALLE, PERFILES, POSTS, NOMBRE_AREA, MIEMBRO
+    LANG, P = lang, ("en/" if lang == "en" else "")
+    if lang == "es":
+        AREAS, MISION, VISION = _ES["AREAS"], _ES["MISION"], _ES["VISION"]
+        EQUIPO, AREAS_DETALLE, PERFILES, POSTS = _ES["EQUIPO"], _ES["AREAS_DETALLE"], _ES["PERFILES"], _ES["POSTS"]
+    else:
+        AREAS, MISION, VISION = EN_C.AREAS_EN, EN_C.MISION_EN, EN_C.VISION_EN
+        EQUIPO = [dict(m, cargo=EN_C.EQUIPO_EN[m["slug"]][0], materias=EN_C.EQUIPO_EN[m["slug"]][1]) for m in _ES["EQUIPO"]]
+        AREAS_DETALLE = EN_C.AREAS_DETALLE_EN
+        PERFILES = {k: dict(_ES["PERFILES"][k], **v) for k, v in EN_C.PERFILES_EN.items()}
+        POSTS = [dict(p, **EN_C.POSTS_EN[p["slug"]]) for p in _ES["POSTS"]]
+    NOMBRE_AREA = {a[0]: a[1] for a in AREAS}
+    MIEMBRO = {m["slug"]: m for m in EQUIPO}
+
+
+# Textos fijos de la interfaz (español → inglés). Se aplican solo a las páginas en inglés.
+UI_EN = [
+ ("BORRADOR · Vista previa privada, no publicada", "DRAFT · Private preview, not published"),
+ ('aria-label="Principal"', 'aria-label="Main"'), ('aria-label="Migas de pan"', 'aria-label="Breadcrumb"'),
+ (">Conversemos<", ">Contact us<"), (">Menú<", ">Menu<"), (">Abogados</span>", ">Attorneys at law</span>"),
+ (">Áreas<", ">Practice areas<"), (">Equipo<", ">Team<"), (">El Estudio<", ">The Firm<"), (">Contacto<", ">Contact<"),
+ (">Inicio<", ">Home<"), ('"name": "Inicio"', '"name": "Home"'),
+ ("Estudio jurídico · Santiago · Desde 2011", "Law firm · Santiago, Chile · Since 2011"),
+ ("Asesoría jurídica integral para empresas, familias y personas", "Comprehensive legal counsel for companies, families and individuals"),
+ ("Desde 2011 acompañamos a empresarios, empresas familiares y personas en sus decisiones legales: sociedades, contratos, patrimonio inmobiliario, conflictos y relación con el Estado. Un mismo equipo, con abogados especialistas cuando el asunto lo requiere.",
+  "Since 2011 we have supported business owners, family businesses and individuals in their legal decisions: companies, contracts, real estate, disputes and dealings with the State. One team, with specialist lawyers when the matter requires it."),
+ (">Ver áreas de práctica<", ">View practice areas<"), (">Fundado en<", ">Founded<"), (">Áreas de práctica<", ">Practice areas<"), (">Oficina<", ">Office<"),
+ ("Cómo podemos ayudarle", "How we can help"), ("Ver área →", "View area →"), (">Ver todas las áreas<", ">View all areas<"),
+ (">Cómo trabajamos<", ">How we work<"), ("Entender antes de decidir", "Understand before deciding"),
+ ("Trabajamos con una idea simple: el cliente debe entender su situación legal y sus opciones antes de decidir.", "We work with a simple idea: clients should understand their legal situation and options before deciding."),
+ (">Un abogado responsable<", ">One responsible lawyer<"), ("Cada asunto tiene un abogado a cargo, de principio a fin, que es su interlocutor directo.", "Each matter has a lawyer in charge from start to finish, who is your direct point of contact."),
+ (">Propuesta por escrito<", ">Written proposal<"), ("Antes de empezar, un diagnóstico claro y una propuesta de trabajo y honorarios por escrito.", "Before starting, a clear assessment and a written proposal of work and fees."),
+ (">Especialistas asociados<", ">Associate specialists<"), ("Cuando la materia lo exige, sumamos abogados asociados con experiencia específica, coordinados por el estudio.", "When the matter requires it, we bring in associate lawyers with specific experience, coordinated by the firm."),
+ (">Reserva profesional<", ">Professional confidentiality<"), ("Toda la información que nos entrega está protegida por el secreto profesional.", "All the information you give us is protected by professional secrecy."),
+ ("</span>Misión<", "</span>Mission<"), ("</span>Visión<", "</span>Vision<"), (">Misión<", ">Mission<"), (">Visión<", ">Vision<"),
+ ("Abogados del estudio", "Our lawyers"), ("Foto pendiente", "Photo pending"),
+ ("Cuéntenos brevemente su consulta y le responderemos a la brevedad para coordinar una reunión.", "Tell us briefly about your query and we will reply promptly to arrange a meeting."),
+ ("Cuéntenos brevemente su consulta y le responderemos a la brevedad.", "Tell us briefly about your query and we will reply promptly."),
+ (">Escribir al estudio<", ">Write to the firm<"), ("¿Necesita orientación sobre su caso?", "Need guidance on your case?"),
+ (">Dirección:<", ">Address:<"), (">Correo:<", ">Email:<"), (">Teléfono:<", ">Phone:<"), ("oficina 305", "office 305"),
+ ("<br />Desde 2011", "<br />Since 2011"), (">Política de privacidad<", ">Privacy policy<"), ("Política de privacidad</a>", "Privacy policy</a>"),
+ (">Área de práctica<", ">Practice area<"), (">Servicios<", ">Services<"), (">Preguntas frecuentes<", ">Frequently asked questions<"),
+ (">Abogado asociado vinculado a esta materia<", ">Associate lawyer for this area<"), (">Artículos relacionados<", ">Related articles<"),
+ ("Próximamente publicaremos artículos sobre esta materia.", "Articles on this area are coming soon."), (">Ir al blog →<", ">Go to the blog →<"),
+ (">Otras áreas<", ">Other areas<"), (">Consultar sobre esta materia<", ">Ask about this area<"),
+ ('"name": "Áreas de práctica"', '"name": "Practice areas"'),
+ ("Doce áreas para acompañar a empresas, familias y personas, de lo personal a lo empresarial.", "Twelve practice areas supporting companies, families and individuals, from the personal to the corporate."),
+ ("Áreas de práctica | Salinas & Cía. Abogados", "Practice areas | Salinas & Cía. Abogados"), ("Áreas de práctica | Salinas &amp; Cía. Abogados", "Practice areas | Salinas &amp; Cía. Abogados"),
+ ("Doce áreas de práctica para empresas, familias y personas: societario, inmobiliario, herencias, familia, laboral, consumidor, administrativo y más.",
+  "Twelve practice areas for companies, families and individuals in Chile: corporate, real estate, inheritance, family, employment, consumer, administrative and more."),
+ ("Un equipo de abogados con experiencia en la empresa, el sector inmobiliario y el sector público.", "A team of lawyers with experience in business, real estate and the public sector."),
+ (">Socio fundador<", ">Founding partner<"), (">Ver perfil →<", ">View profile →<"), (">Abogados asociados<", ">Associate lawyers<"),
+ ("Para materias que requieren experiencia específica, el estudio trabaja con abogados asociados. El cliente mantiene siempre un único punto de contacto con el estudio.",
+  "For matters that require specific experience, the firm works with associate lawyers. Clients always keep a single point of contact with the firm."),
+ (">Materias:<", ">Areas:<"), ('"name": "Equipo"', '"name": "Team"'), ("Equipo | Salinas &amp; Cía. Abogados", "Team | Salinas &amp; Cía. Abogados"),
+ ("Conozca a los abogados de Salinas &amp; Cía.: experiencia en empresas, sector inmobiliario y sector público.", "Meet the lawyers of Salinas &amp; Cía.: experience in business, real estate and the public sector."),
+ (">Materias<", ">Areas<"), (">Formación<", ">Education<"), (">formulario<", ">contact form<"),
+ (", socio fundador de Salinas &amp; Cía. Abogados", ", founding partner of Salinas &amp; Cía. Abogados"), (", abogado asociado de Salinas &amp; Cía. Abogados", ", associate lawyer at Salinas &amp; Cía. Abogados"),
+ ('"name": "El Estudio"', '"name": "The Firm"'),
+ ("Salinas &amp; Cía. Abogados fue fundado en 2011 por Sebastián Salinas Fuenzalida para ofrecer una asesoría jurídica eficiente e integral a empresas, empresarios, familias empresarias y personas.",
+  "Salinas &amp; Cía. Abogados was founded in 2011 by Sebastián Salinas Fuenzalida to provide efficient and comprehensive legal counsel to companies, entrepreneurs, business families and individuals."),
+ ("Creemos que una buena asesoría legal se nota en las decisiones del cliente: entender sus riesgos, conocer sus opciones y actuar a tiempo. Por eso trabajamos con:",
+  "We believe good legal counsel shows in the client's decisions: understanding the risks, knowing the options and acting on time. That is why we work with:"),
+ ("<strong>Un abogado responsable</strong> de cada asunto, de principio a fin.", "<strong>One responsible lawyer</strong> for each matter, from start to finish."),
+ ("<strong>Propuestas por escrito</strong>, con alcance y honorarios claros antes de empezar.", "<strong>Written proposals</strong>, with clear scope and fees before starting."),
+ ("<strong>Especialistas asociados</strong> cuando la materia lo exige, coordinados por el estudio.", "<strong>Associate specialists</strong> when the matter requires it, coordinated by the firm."),
+ ("<strong>Reserva profesional</strong> sobre toda la información que nos entrega.", "<strong>Professional confidentiality</strong> over all the information you give us."),
+ ("Razón social:", "Legal name:"), ("Oficina:", "Office:"), (">Ecosistema<", ">Ecosystem<"),
+ ("Plataforma con IA jurídica para abogados y estudios en Chile, producto de LEXINNOVA SpA, de la que Sebastián Salinas es cofundador y CEO.", "Legal AI platform for lawyers and law firms in Chile, a product of LEXINNOVA SpA, co-founded and led as CEO by Sebastián Salinas."),
+ ("Sitio personal del socio fundador, con su trayectoria, publicaciones y blog.", "Personal website of the founding partner, with his career, publications and blog."),
+ ("El Estudio | Salinas &amp; Cía. Abogados, desde 2011", "The Firm | Salinas &amp; Cía. Abogados, since 2011"),
+ ("Historia, misión, forma de trabajo y ecosistema de Salinas &amp; Cía. Abogados, estudio jurídico fundado en 2011 en Santiago.", "History, mission, approach and ecosystem of Salinas &amp; Cía. Abogados, a law firm founded in 2011 in Santiago, Chile."),
+ ("Edificio en Av. Presidente Kennedy 5600, Vitacura, sede de Salinas &amp; Cía. Abogados", "Building at Av. Presidente Kennedy 5600, Vitacura, home of Salinas &amp; Cía. Abogados"),
+ ("Edificio de oficinas en Av. Presidente Kennedy 5600, Vitacura, donde se ubica Salinas &amp; Cía. Abogados", "Office building at Av. Presidente Kennedy 5600, Vitacura, where Salinas &amp; Cía. Abogados is located"),
+ ("Edificio en Av. Presidente Kennedy 5600, Vitacura, donde se ubica Salinas &amp; Cía. Abogados", "Building at Av. Presidente Kennedy 5600, Vitacura, where Salinas &amp; Cía. Abogados is located"),
+ ("Fachada del edificio en Av. Presidente Kennedy 5600, Vitacura", "Facade of the building at Av. Presidente Kennedy 5600, Vitacura"),
+ ("Edificio en Av. Presidente Kennedy 5600, Vitacura", "Building at Av. Presidente Kennedy 5600, Vitacura"),
+ (">Publicaciones y casos<", ">Publications and cases<"), ('"name": "Publicaciones"', '"name": "Publications"'), (">Publicaciones<", ">Publications<"),
+ ("Casos, artículos y publicaciones de los abogados del estudio.", "Cases, articles and publications by the firm's lawyers."),
+ ("Publicaciones y casos | Salinas &amp; Cía. Abogados", "Publications and cases | Salinas &amp; Cía. Abogados"),
+ ("Casos, artículos y publicaciones de los abogados de Salinas &amp; Cía. Abogados.", "Cases, articles and publications by the lawyers of Salinas &amp; Cía. Abogados."),
+ ("Caso · 2023", "Case · 2023"), ("Artículo · 2007", "Article · 2007"), ("Guía · 2021", "Guide · 2021"),
+ ("Reclamo contra el Conservador de Bienes Raíces de Pozo Almonte", "Claim against the Real Estate Registrar of Pozo Almonte"),
+ ("El tribunal acogió el reclamo y ordenó inscribir una compraventa, porque la medida precautoria que afectaba al inmueble se decretó después de solicitada la inscripción. Causa patrocinada por Sebastián Salinas Fuenzalida.",
+  "The court upheld the claim and ordered a sale to be registered, because the interim measure affecting the property was ordered after registration had been requested. Case handled by Sebastián Salinas Fuenzalida."),
+ ("Comentario del fallo en Diario Constitucional (14/02/2023)", "Commentary on the ruling in Diario Constitucional (14/02/2023, in Spanish)"),
+ ("Revista Temas de Derecho. Sebastián Salinas Fuenzalida.", "Revista Temas de Derecho (in Spanish). Sebastián Salinas Fuenzalida."), (">Ver referencias ↗<", ">View references ↗<"),
+ ("Elaborada para el Colegio de Kinesiólogos de Chile. Sebastián Salinas Fuenzalida.", "Guide to setting up non-profit legal entities, written for the Chilean College of Kinesiologists (in Spanish). Sebastián Salinas Fuenzalida."),
+ (">Ver la guía (PDF) ↗<", ">View the guide (PDF) ↗<"),
+ ('"name": "Contacto"', '"name": "Contact"'), ('"name": "Gracias"', '"name": "Thank you"'),
+ ("No completar:", "Do not fill in:"), (">Nombre<", ">Name<"), (">Correo electrónico<", ">Email<"), (">Teléfono (opcional)<", ">Phone (optional)<"),
+ (">Área de su consulta<", ">Area of your query<"), (">Seleccione…<", ">Select…<"), (">Otra<", ">Other<"), (">Mensaje<", ">Message<"),
+ ("Por favor, no incluya datos sensibles ni detalles reservados de su caso en este primer contacto.", "Please do not include sensitive data or confidential details of your case in this first contact."),
+ ("He leído y acepto la ", "I have read and accept the "), (">Enviar consulta<", ">Send query<"), ("Ver en Google Maps ↗", "View on Google Maps ↗"),
+ ("Contacto | Salinas &amp; Cía. Abogados, Santiago", "Contact | Salinas &amp; Cía. Abogados, Santiago, Chile"),
+ ("Escríbanos para coordinar una reunión. Formulario de contacto, correo y teléfono de Salinas &amp; Cía. Abogados en Santiago.", "Write to us to arrange a meeting. Contact form, email and phone of Salinas &amp; Cía. Abogados in Santiago, Chile."),
+ ("Gracias por escribirnos", "Thank you for writing to us"), ("Recibimos su consulta y le responderemos a la brevedad.", "We have received your query and will reply promptly."),
+ (">Gracias<", ">Thank you<"), (">Volver al inicio<", ">Back to home<"), ("Gracias | Salinas", "Thank you | Salinas"), ("Recibimos su consulta.", "We have received your query."),
+ ('"name": "Privacidad"', '"name": "Privacy"'), (">Privacidad<", ">Privacy<"),
+ ("Política de privacidad | Salinas &amp; Cía. Abogados", "Privacy policy | Salinas &amp; Cía. Abogados"),
+ ("Cómo tratamos los datos personales que nos entrega a través de este sitio, conforme a las leyes 19.628 y 21.719.", "How we process the personal data you provide through this website, under Chilean Laws 19,628 and 21,719."),
+ ("<strong>Responsable.</strong>", "<strong>Controller.</strong>"), (", con domicilio en ", ", located at "),
+ ("<strong>Datos que recogemos.</strong> Los que usted nos entrega en el formulario de contacto: nombre, correo electrónico, teléfono (opcional), área de su consulta y mensaje.",
+  "<strong>Data we collect.</strong> The data you provide in the contact form: name, email, phone (optional), area of your query and message."),
+ ("<strong>Para qué los usamos.</strong> Solo para responder su consulta y, si usted lo decide, coordinar una reunión o una propuesta de servicios. No los usamos para publicidad ni los compartimos con terceros, salvo el proveedor que aloja el sitio y procesa el formulario.",
+  "<strong>How we use them.</strong> Only to answer your query and, if you wish, to arrange a meeting or a service proposal. We do not use them for advertising or share them with third parties, except the provider that hosts the website and processes the form."),
+ ("<strong>Base legal.</strong> Su consentimiento, conforme a la Ley 19.628 sobre protección de la vida privada y a la Ley 21.719 que la modifica.",
+  "<strong>Legal basis.</strong> Your consent, under Law 19,628 on the protection of private life and Law 21,719 amending it."),
+ ("<strong>Conservación.</strong> Conservamos los datos mientras sean necesarios para atender su consulta y luego los eliminamos, salvo que se inicie una relación profesional.",
+  "<strong>Retention.</strong> We keep the data while needed to handle your query and then delete it, unless a professional relationship begins."),
+ ("<strong>Sus derechos.</strong> Puede pedir acceso, rectificación, eliminación u oposición al tratamiento de sus datos escribiendo a ",
+  "<strong>Your rights.</strong> You may request access, rectification, erasure or objection to the processing of your data by writing to "),
+ ("<strong>Secreto profesional.</strong> La información que nos entregue sobre su caso está protegida por el secreto profesional.",
+  "<strong>Professional secrecy.</strong> The information you give us about your case is protected by professional secrecy."),
+ ('"name": "Blog"', '"name": "Blog"'),
+ ("Artículos sobre temas jurídicos de interés para empresas, familias y personas, escritos por los abogados de Salinas &amp; Cía.", "Articles on legal topics of interest to companies, families and individuals in Chile, written by the lawyers of Salinas &amp; Cía."),
+ ("Artículos sobre temas jurídicos de interés para empresas, familias y personas.", "Articles on legal topics of interest to companies, families and individuals in Chile."),
+ ("Por Sebastián Salinas Fuenzalida", "By Sebastián Salinas Fuenzalida"),
+ ("Socio fundador de Salinas &amp; Cía. Abogados</span>", "Founding partner of Salinas &amp; Cía. Abogados</span>"),
+ ("Sebastián Salinas Fuenzalida es abogado y socio fundador de Salinas &amp; Cía. Abogados. Este artículo es informativo y no reemplaza la asesoría legal para un caso concreto.",
+  "Sebastián Salinas Fuenzalida is a lawyer and founding partner of Salinas &amp; Cía. Abogados. This article is for information only and does not replace legal advice on a specific case."),
+ (">Fuentes<", ">Sources<"), ("Área relacionada:", "Related area:"),
+ ("Salinas &amp; Cía. Abogados | Estudio jurídico en Santiago", "Salinas &amp; Cía. Abogados | Law firm in Santiago, Chile"),
+ ("Asesoría jurídica integral desde 2011 para empresas, familias y personas: societario, empresas familiares, inmobiliario, litigación y administrativo.",
+  "Comprehensive legal counsel since 2011 for companies, families and individuals in Chile: corporate, family business, real estate, litigation and administrative law."),
+ ("founding partner de Salinas", "founding partner of Salinas"), ("associate lawyer de Salinas", "associate lawyer at Salinas"),
+ ('"addressRegion": "Región Metropolitana"', '"addressRegion": "Santiago Metropolitan Region"'),
+]
+
+
+def a_ingles(h):
+    for a, b in sorted(UI_EN, key=lambda x: -len(x[0])):
+        h = h.replace(a, b)
+    return h
 
 def escribir(destino_raiz, path, contenido, vista_previa=False):
     if vista_previa:
         # En la vista previa (artefacto de Claude) los enlaces a carpetas deben apuntar a index.html.
         contenido = re.sub(r'href="((?:\.\./)*[a-z0-9\-/]*/)"', r'href="\1index.html"', contenido)
         contenido = contenido.replace('href="./"', 'href="index.html"')
-    destino = os.path.join(destino_raiz, path.strip("/"), "index.html")
+    destino = os.path.join(destino_raiz, P + path.strip("/"), "index.html")
     os.makedirs(os.path.dirname(destino), exist_ok=True)
     with open(destino, "w", encoding="utf-8") as f:
         f.write(contenido)
@@ -705,19 +878,95 @@ def todas():
 
 def robots():
     txt = ("# BORRADOR: sitio no publicado\nUser-agent: *\nDisallow: /\n" if BORRADOR else
-           "User-agent: *\nAllow: /\n\nSitemap: " + BASE + "/sitemap.xml\n")
+           "".join(f"User-agent: {b}\nAllow: /\n\n" for b in ["*", "GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-SearchBot", "PerplexityBot", "Google-Extended", "Applebot-Extended", "Bingbot"])
+           + "Sitemap: " + BASE + "/sitemap.xml\n")
     with open(os.path.join(SITE, "robots.txt"), "w") as f:
         f.write(txt)
 
 
+def sitemap(rutas):
+    items = []
+    for path in rutas:
+        if path.startswith("/contacto/gracias"):
+            continue
+        es, en = BASE + path, BASE + "/en" + path
+        for loc in (es, en):
+            items.append(f"""  <url><loc>{loc}</loc>
+    <xhtml:link rel="alternate" hreflang="es-CL" href="{es}"/>
+    <xhtml:link rel="alternate" hreflang="en" href="{en}"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{es}"/>
+  </url>""")
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "\n".join(items) + "\n</urlset>\n"
+    with open(os.path.join(SITE, "sitemap.xml"), "w", encoding="utf-8") as f:
+        f.write(xml)
+
+
+def llms():
+    usar("es")
+    areas_es = "\n".join(f"- {n}: {BASE}/areas/{s}/" for s, n, d in AREAS)
+    posts_es = "\n".join(f"- {p['titulo']} ({p['fecha']}): {BASE}/blog/{p['slug']}/" for p in POSTS)
+    usar("en")
+    areas_en = "\n".join(f"- {n}: {BASE}/en/areas/{s}/" for s, n, d in AREAS)
+    usar("es")
+    E = ESTUDIO
+    txt = f"""# Salinas & Cía. Abogados
+
+> Estudio jurídico chileno fundado en 2011 por Sebastián Salinas Fuenzalida, con oficina en {E['calle']}, {E['comuna']}, {E['ciudad']}. Asesoría jurídica integral a empresas, empresarios, familias empresarias y personas. Razón social: {E['razon_social']}.
+
+Sitio: {BASE}/ · English: {BASE}/en/ · Contacto: {E['correo']} · Instagram: @salinasyciaabogados
+
+## Misión
+{MISION}
+
+## Áreas de práctica
+{areas_es}
+
+## Equipo
+- Sebastián Salinas Fuenzalida — socio fundador. Abogado (Corte Suprema, 26/08/2011). Perfil: {BASE}/equipo/sebastian-salinas/ · Sitio personal: https://www.sebastiansalinas.cl/ · Contacto: ssalinas@salinasycia.cl
+- Felipe Lanchares Pérez — abogado asociado; derecho administrativo, regulatorio y ambiental. Perfil: {BASE}/equipo/felipe-lanchares/
+- Luis Guillermo Salinas Correa — abogado asociado; derecho de familia y protección de niños, niñas y adolescentes. Perfil: {BASE}/equipo/luis-salinas-correa/
+
+## Blog
+{posts_es}
+
+## Ecosistema
+- Dunora (LEXINNOVA SpA), plataforma LegalTech: https://dunora.ai/
+
+---
+
+# Salinas & Cía. Abogados (English)
+
+> Chilean law firm founded in 2011 by Sebastián Salinas Fuenzalida, with offices at Av. Presidente Kennedy 5600, office 305, Vitacura, Santiago. Comprehensive legal counsel for companies, entrepreneurs, business families and individuals. Contact: {E['correo']}
+
+## Practice areas
+{areas_en}
+"""
+    with open(os.path.join(SITE, "llms.txt"), "w", encoding="utf-8") as f:
+        f.write(txt)
+
+
+def favicon():
+    svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#06132A"/><text x="32" y="44" font-family="Georgia,serif" font-size="34" fill="#F7F5F1" text-anchor="middle">S<tspan fill="#D9A877">&amp;</tspan></text></svg>'
+    with open(os.path.join(SITE, "favicon.svg"), "w") as f:
+        f.write(svg)
+
+
 if __name__ == "__main__":
     import sys
-    paginas = list(todas())
-    for path, h in paginas:
+    salidas = []
+    for lang in ("es", "en"):
+        usar(lang)
+        for path, h in todas():
+            if lang == "en":
+                h = a_ingles(h)
+            salidas.append((lang, path, h))
+    rutas = [p for l, p, h in salidas if l == "es"]
+    dest_vp = sys.argv[sys.argv.index("--vista-previa") + 1] if "--vista-previa" in sys.argv else None
+    for lang, path, h in salidas:
+        usar(lang)
         escribir(SITE, path, h)
-    robots()
-    if "--vista-previa" in sys.argv:
-        dest = sys.argv[sys.argv.index("--vista-previa") + 1]
-        for path, h in paginas:
-            escribir(dest, path, h, vista_previa=True)
-    print(f"{len(paginas)} páginas generadas en site/" + (" (borrador)" if BORRADOR else ""))
+        if dest_vp:
+            escribir(dest_vp, path, h, vista_previa=True)
+    usar("es")
+    robots(); sitemap(rutas); llms(); favicon()
+    print(f"{len(salidas)} páginas generadas (ES + EN)" + (" — borrador" if BORRADOR else ""))
