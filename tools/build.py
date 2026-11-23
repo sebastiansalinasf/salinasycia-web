@@ -20,9 +20,8 @@ ESTUDIO = {
     "comuna": "Vitacura",
     "ciudad": "Santiago",
     "instagram": "https://www.instagram.com/salinasyciaabogados/",
-    "correo": None,      # [PENDIENTE] correo general del estudio
+    "correo": "contacto@salinasycia.cl",
     "telefono": None,    # [PENDIENTE]
-    "horario": None,     # [PENDIENTE]
 }
 
 # Áreas de práctica: slug, nombre, línea breve. Las 6 primeras se destacan en portada.
@@ -37,7 +36,7 @@ AREAS = [
     ("litigacion-civil", "Litigación civil", "Juicios civiles con una estrategia definida desde el inicio."),
     ("recursos-constitucionales", "Recursos constitucionales", "Recursos de protección y de amparo ante las Cortes."),
     ("derecho-laboral", "Derecho laboral", "Trabajadores y empresas: despidos, finiquitos y juicios del trabajo."),
-    ("derecho-administrativo-y-regulatorio", "Administrativo y regulatorio", "Permisos, concesiones y defensa ante organismos del Estado."),
+    ("derecho-administrativo-y-regulatorio", "Administrativo, regulatorio y ambiental", "Permisos, concesiones, derecho ambiental y defensa ante organismos del Estado."),
     ("asesoria-legal-permanente", "Asesoría legal permanente", "Planes mensuales de asesoría para empresas y familias."),
 ]
 
@@ -129,12 +128,10 @@ def contacto_datos(dark=True):
     E = ESTUDIO
     correo = f'<a href="mailto:{E["correo"]}" class="hover:text-copper-300">{E["correo"]}</a>' if E["correo"] else PEND.format("correo general")
     tel = E["telefono"] or PEND.format("teléfono / WhatsApp")
-    hor = E["horario"] or PEND.format("horario")
     return f"""<ul class="space-y-3 text-sm">
       <li><span class="text-slate2-400">Dirección:</span> {E['calle']}, {E['comuna']}, {E['ciudad']}</li>
       <li><span class="text-slate2-400">Correo:</span> {correo}</li>
       <li><span class="text-slate2-400">Teléfono:</span> {tel}</li>
-      <li><span class="text-slate2-400">Horario:</span> {hor}</li>
     </ul>"""
 
 
@@ -182,6 +179,7 @@ def jsonld_estudio():
         "areaServed": "Chile",
         "knowsAbout": [a[1] for a in AREAS],
         "sameAs": [E["instagram"]],
+        "email": E["correo"],
         "image": BASE + "/assets/og-salinasycia.jpg",
     }
 
@@ -199,7 +197,7 @@ def portada():
         <h3 class="font-serif text-2xl leading-snug text-navy-900">{n}</h3>
         <p class="mt-3 text-sm leading-relaxed text-navy-800/80">{d}</p>
         <span class="mt-5 inline-block text-xs font-semibold uppercase tracking-wider text-copper-600 group-hover:text-copper-500">Ver área →</span>
-      </a>""" for s, n, d in AREAS[:6])
+      </a>""" for s, n, d in AREAS)
     otras = " · ".join(f'<a class="hover:text-copper-600" href="{r}areas/{s}/">{n}</a>' for s, n, d in AREAS[6:])
 
     def tarjeta(m):
@@ -250,8 +248,7 @@ def portada():
     <h2 class="mt-4 max-w-2xl font-serif text-4xl leading-tight sm:text-5xl">Cómo podemos ayudarle</h2>
     <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{areas}
     </div>
-    <p class="mt-10 text-sm leading-relaxed text-navy-800/80"><span class="font-semibold text-navy-900">También:</span> {otras}.</p>
-    <a href="{r}areas/" class="mt-6 inline-block rounded-full border border-navy-900/20 px-6 py-3 text-sm font-semibold hover:border-copper-500 hover:text-copper-600">Ver todas las áreas</a>
+    <a href="{r}areas/" class="mt-10 inline-block rounded-full border border-navy-900/20 px-6 py-3 text-sm font-semibold hover:border-copper-500 hover:text-copper-600">Ver todas las áreas</a>
   </div>
 </section>
 
@@ -271,21 +268,6 @@ def portada():
         <div class="border-t-2 border-copper-500 pt-5"><dt class="font-serif text-2xl">Especialistas asociados</dt><dd class="mt-2 text-sm leading-relaxed text-navy-800/80">Cuando la materia lo exige, sumamos abogados asociados con experiencia específica, coordinados por el estudio.</dd></div>
         <div class="border-t-2 border-copper-500 pt-5"><dt class="font-serif text-2xl">Reserva profesional</dt><dd class="mt-2 text-sm leading-relaxed text-navy-800/80">Toda la información que nos entrega está protegida por el secreto profesional.</dd></div>
       </dl>
-    </div>
-  </div>
-</section>
-
-<!-- MISIÓN Y VISIÓN -->
-<section class="relative overflow-hidden bg-navy-900 py-24 text-white sm:py-28">
-  <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(184,115,51,.15),transparent_60%)]"></div>
-  <div class="relative mx-auto grid max-w-6xl gap-14 px-6 lg:grid-cols-2 lg:px-8">
-    <div>
-      <p class="eyebrow flex items-center gap-3 text-copper-400"><span class="h-px w-10 bg-copper-500"></span>Misión</p>
-      <p class="mt-6 font-serif text-2xl leading-relaxed sm:text-3xl">{MISION}</p>
-    </div>
-    <div>
-      <p class="eyebrow flex items-center gap-3 text-copper-400"><span class="h-px w-10 bg-copper-500"></span>Visión</p>
-      <p class="mt-6 font-serif text-2xl leading-relaxed sm:text-3xl">{VISION}</p>
     </div>
   </div>
 </section>
@@ -406,7 +388,7 @@ def pagina_area(slug):
         vinc = f"""<div class="mt-10 rounded-2xl border border-slate2-100 bg-white p-6"><p class="eyebrow text-copper-600">Abogado asociado vinculado a esta materia</p>
         <a href="{r}equipo/{m['slug']}/" class="mt-2 block font-serif text-2xl hover:text-copper-600">{m['nombre']} →</a></div>"""
     posts = [p for p in POSTS if p["area"] == slug]
-    art = ""
+    art = f'<div class="mt-10 rounded-2xl border border-dashed border-slate2-300 p-6"><p class="eyebrow text-copper-600">Artículos relacionados</p><p class="mt-2 text-navy-800/80">Próximamente publicaremos artículos sobre esta materia. <a class="font-semibold text-copper-600 hover:text-copper-500" href="{r}blog/">Ir al blog →</a></p></div>'
     if posts:
         art = '<div class="mt-10"><p class="eyebrow text-copper-600">Artículos relacionados</p><ul class="mt-3 space-y-2">' + "".join(
             f'<li><a class="font-serif text-xl hover:text-copper-600" href="{r}blog/{p["slug"]}/">{p["titulo"]} →</a></li>' for p in posts) + "</ul></div>"
@@ -495,7 +477,7 @@ def pagina_perfil(slug):
     form = "".join(f'<li class="border-b border-slate2-100 py-3">{pend(x)}</li>' for x in pf["formacion"])
     areas = "".join(f'<li><a class="hover:text-copper-600" href="{r}areas/{s}/">{NOMBRE_AREA[s]}</a></li>' for s in pf["areas"])
     contacto = (f'<a class="hover:text-copper-600" href="mailto:{pf["correo"]}">{pf["correo"]}</a>' if pf["correo"]
-                else f'A través del estudio: <a class="hover:text-copper-600" href="{r}contacto/">formulario de contacto</a>')
+                else f'<a class="hover:text-copper-600" href="mailto:{ESTUDIO["correo"]}">{ESTUDIO["correo"]}</a> · <a class="hover:text-copper-600" href="{r}contacto/">formulario</a>')
     enlaces = "".join(f'<li><a class="hover:text-copper-600" href="{u}" target="_blank" rel="noopener">{t} ↗</a></li>' for t, u in pf["enlaces"])
     cuerpo = cabecera(r, m["cargo"], m["nombre"], None, [("Equipo", "equipo/"), (m["nombre"], None)]) + f"""
 <section class="py-20 sm:py-24"><div class="mx-auto grid max-w-6xl gap-14 px-6 lg:grid-cols-12 lg:px-8">
