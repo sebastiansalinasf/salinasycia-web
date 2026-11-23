@@ -44,7 +44,7 @@ EQUIPO = [
     {"slug": "sebastian-salinas", "nombre": "Sebastián Salinas Fuenzalida", "cargo": "Socio fundador",
      "materias": "Empresa, gobierno corporativo, inmobiliario y litigación", "foto": "assets/sebastian-salinas-fuenzalida.jpg"},
     {"slug": "felipe-lanchares", "nombre": "Felipe Lanchares Pérez", "cargo": "Abogado asociado",
-     "materias": "Administrativo, regulatorio y ambiental", "foto": None},
+     "materias": "Administrativo, regulatorio y ambiental", "foto": "assets/felipe-lanchares-perez.webp"},
     {"slug": "luis-salinas-correa", "nombre": "Luis Guillermo Salinas Correa", "cargo": "Abogado asociado",
      "materias": "Familia y protección de niños, niñas y adolescentes", "foto": None},
 ]
