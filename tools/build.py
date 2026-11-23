@@ -240,20 +240,6 @@ def portada():
   </dl>
 </section>
 
-<!-- MISIÓN Y VISIÓN -->
-<section class="bg-white py-24 sm:py-28">
-  <div class="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
-    <div class="border-l-2 border-copper-500 pl-8">
-      <p class="eyebrow text-copper-600">Misión</p>
-      <p class="mt-5 font-serif text-2xl leading-snug text-navy-900 sm:text-[1.7rem]">{MISION}</p>
-    </div>
-    <div class="border-l-2 border-copper-500 pl-8">
-      <p class="eyebrow text-copper-600">Visión</p>
-      <p class="mt-5 font-serif text-2xl leading-snug text-navy-900 sm:text-[1.7rem]">{VISION}</p>
-    </div>
-  </div>
-</section>
-
 <!-- ÁREAS -->
 <section class="py-24 sm:py-28">
   <div class="mx-auto max-w-6xl px-6 lg:px-8">
@@ -282,6 +268,21 @@ def portada():
         <div class="border-t-2 border-copper-500 pt-5"><dt class="font-serif text-2xl">Especialistas asociados</dt><dd class="mt-2 text-sm leading-relaxed text-navy-800/80">Cuando la materia lo exige, sumamos abogados asociados con experiencia específica, coordinados por el estudio.</dd></div>
         <div class="border-t-2 border-copper-500 pt-5"><dt class="font-serif text-2xl">Reserva profesional</dt><dd class="mt-2 text-sm leading-relaxed text-navy-800/80">Toda la información que nos entrega está protegida por el secreto profesional.</dd></div>
       </dl>
+    </div>
+  </div>
+</section>
+
+<!-- MISIÓN Y VISIÓN -->
+<section class="relative overflow-hidden bg-navy-900 py-24 text-white sm:py-28">
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(184,115,51,.15),transparent_60%)]"></div>
+  <div class="relative mx-auto grid max-w-6xl gap-14 px-6 lg:grid-cols-2 lg:px-8">
+    <div>
+      <p class="eyebrow flex items-center gap-3 text-copper-400"><span class="h-px w-10 bg-copper-500"></span>Misión</p>
+      <p class="mt-6 font-serif text-2xl leading-relaxed sm:text-3xl">{MISION}</p>
+    </div>
+    <div>
+      <p class="eyebrow flex items-center gap-3 text-copper-400"><span class="h-px w-10 bg-copper-500"></span>Visión</p>
+      <p class="mt-6 font-serif text-2xl leading-relaxed sm:text-3xl">{VISION}</p>
     </div>
   </div>
 </section>
