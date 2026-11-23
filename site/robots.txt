@@ -1,0 +1,3 @@
+# BORRADOR: sitio no publicado
+User-agent: *
+Disallow: /
