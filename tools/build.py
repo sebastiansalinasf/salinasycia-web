@@ -50,6 +50,9 @@ EQUIPO = [
      "materias": "Familia y protección de niños, niñas y adolescentes", "foto": None},
 ]
 
+MISION = "Desde 2011 asesoramos a personas, familias, empresarios y empresas con una mirada integral de sus asuntos, de lo personal a lo empresarial. Construimos con cada cliente una relación cercana y de confianza, con un abogado responsable de principio a fin, que combina criterio jurídico y visión de negocios para que el cliente decida informado y a tiempo."
+VISION = "Ser el estudio de cabecera de las familias y empresas que confían en nosotros: el lugar donde resuelven sus asuntos legales, personales y empresariales, en una relación que perdura en el tiempo."
+
 NAV = [("/areas/", "Áreas"), ("/equipo/", "Equipo"), ("/estudio/", "El Estudio"), ("/blog/", "Blog"), ("/contacto/", "Contacto")]
 
 
@@ -259,6 +262,21 @@ def portada():
         <div class="border-t-2 border-copper-500 pt-5"><dt class="font-serif text-2xl">Especialistas asociados</dt><dd class="mt-2 text-sm leading-relaxed text-navy-800/80">Cuando la materia lo exige, sumamos abogados asociados con experiencia específica, coordinados por el estudio.</dd></div>
         <div class="border-t-2 border-copper-500 pt-5"><dt class="font-serif text-2xl">Reserva profesional</dt><dd class="mt-2 text-sm leading-relaxed text-navy-800/80">Toda la información que nos entrega está protegida por el secreto profesional.</dd></div>
       </dl>
+    </div>
+  </div>
+</section>
+
+<!-- MISIÓN Y VISIÓN -->
+<section class="relative overflow-hidden bg-navy-900 py-24 text-white sm:py-28">
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(184,115,51,.15),transparent_60%)]"></div>
+  <div class="relative mx-auto grid max-w-6xl gap-14 px-6 lg:grid-cols-2 lg:px-8">
+    <div>
+      <p class="eyebrow flex items-center gap-3 text-copper-400"><span class="h-px w-10 bg-copper-500"></span>Misión</p>
+      <p class="mt-6 font-serif text-2xl leading-relaxed sm:text-3xl">{MISION}</p>
+    </div>
+    <div>
+      <p class="eyebrow flex items-center gap-3 text-copper-400"><span class="h-px w-10 bg-copper-500"></span>Visión</p>
+      <p class="mt-6 font-serif text-2xl leading-relaxed sm:text-3xl">{VISION}</p>
     </div>
   </div>
 </section>
