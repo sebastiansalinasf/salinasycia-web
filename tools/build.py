@@ -53,6 +53,12 @@ EQUIPO = [
 MISION = "Desde 2011 asesoramos a personas, familias, empresarios y empresas con una mirada integral de sus asuntos, de lo personal a lo empresarial. Construimos con cada cliente una relación cercana y de confianza, con un abogado responsable de principio a fin, que combina criterio jurídico y visión de negocios para que el cliente decida informado y a tiempo."
 VISION = "Ser el estudio de cabecera de las familias y empresas que confían en nosotros: el lugar donde resuelven sus asuntos legales, personales y empresariales, en una relación que perdura en el tiempo."
 
+MISION = ("Desde 2011 asesoramos a personas, familias, empresarios y empresas con una mirada integral de sus asuntos, "
+          "de lo personal a lo empresarial. Construimos con cada cliente una relación cercana y de confianza, con un abogado "
+          "responsable de principio a fin, que combina criterio jurídico y visión de negocios para que el cliente decida informado y a tiempo.")
+VISION = ("Ser el estudio de cabecera de las familias y empresas que confían en nosotros: el lugar donde resuelven sus asuntos "
+          "legales, personales y empresariales, en una relación que perdura en el tiempo.")
+
 NAV = [("/areas/", "Áreas"), ("/equipo/", "Equipo"), ("/estudio/", "El Estudio"), ("/blog/", "Blog"), ("/contacto/", "Contacto")]
 
 
@@ -232,6 +238,20 @@ def portada():
     <div class="bg-navy-950 p-6"><dt class="text-xs uppercase tracking-wider text-slate2-400">Áreas de práctica</dt><dd class="mt-2 font-serif text-4xl text-copper-300">12</dd></div>
     <div class="bg-navy-950 p-6"><dt class="text-xs uppercase tracking-wider text-slate2-400">Oficina</dt><dd class="mt-2 font-serif text-4xl text-copper-300">Vitacura</dd></div>
   </dl>
+</section>
+
+<!-- MISIÓN Y VISIÓN -->
+<section class="bg-white py-24 sm:py-28">
+  <div class="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+    <div class="border-l-2 border-copper-500 pl-8">
+      <p class="eyebrow text-copper-600">Misión</p>
+      <p class="mt-5 font-serif text-2xl leading-snug text-navy-900 sm:text-[1.7rem]">{MISION}</p>
+    </div>
+    <div class="border-l-2 border-copper-500 pl-8">
+      <p class="eyebrow text-copper-600">Visión</p>
+      <p class="mt-5 font-serif text-2xl leading-snug text-navy-900 sm:text-[1.7rem]">{VISION}</p>
+    </div>
+  </div>
 </section>
 
 <!-- ÁREAS -->
