@@ -35,6 +35,7 @@ AREAS = [
     ("contratos-y-negociacion", "Contratos y negociación", "Redacción, revisión y negociación de contratos; riesgos legales."),
     ("litigacion-civil", "Litigación civil", "Juicios civiles con una estrategia definida desde el inicio."),
     ("recursos-constitucionales", "Recursos constitucionales", "Recursos de protección y de amparo ante las Cortes."),
+    ("derecho-penal", "Derecho penal", "Defensa penal, querellas y prevención de delitos en la empresa."),
     ("derecho-laboral", "Derecho laboral", "Trabajadores y empresas: despidos, finiquitos y juicios del trabajo."),
     ("derecho-administrativo-y-regulatorio", "Administrativo, regulatorio y ambiental", "Permisos, concesiones, derecho ambiental y defensa ante organismos del Estado."),
     ("asesoria-legal-permanente", "Asesoría legal permanente", "Planes mensuales de asesoría para empresas y familias."),
@@ -45,8 +46,10 @@ EQUIPO = [
      "materias": "Empresa, gobierno corporativo, inmobiliario y litigación", "foto": "assets/sebastian-salinas-fuenzalida.jpg"},
     {"slug": "felipe-lanchares", "nombre": "Felipe Lanchares Pérez", "cargo": "Abogado asociado",
      "materias": "Administrativo, regulatorio y ambiental", "foto": "assets/felipe-lanchares-perez.webp"},
-    {"slug": "luis-salinas-correa", "nombre": "Luis Guillermo Salinas Correa", "cargo": "Abogado asociado",
+    {"slug": "luis-salinas-correa", "nombre": "Luis Guillermo Salinas Correa", "cargo": "Abogado senior consultor",
      "materias": "Familia y protección de niños, niñas y adolescentes", "foto": None},
+    {"slug": "karl-pirtzl-saldivar", "nombre": "Karl Pirtzl Saldivar", "cargo": "Abogado asociado",
+     "materias": "Derecho penal", "foto": "assets/karl-pirtzl-saldivar.webp"},
 ]
 
 
@@ -260,7 +263,7 @@ def portada():
   </div>
   <dl class="relative mx-auto mt-20 grid max-w-6xl grid-cols-1 gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-3">
     <div class="bg-navy-950 p-6"><dt class="text-xs uppercase tracking-wider text-slate2-400">Fundado en</dt><dd class="mt-2 font-serif text-4xl text-copper-300">2011</dd></div>
-    <div class="bg-navy-950 p-6"><dt class="text-xs uppercase tracking-wider text-slate2-400">Áreas de práctica</dt><dd class="mt-2 font-serif text-4xl text-copper-300">12</dd></div>
+    <div class="bg-navy-950 p-6"><dt class="text-xs uppercase tracking-wider text-slate2-400">Áreas de práctica</dt><dd class="mt-2 font-serif text-4xl text-copper-300">{len(AREAS)}</dd></div>
     <div class="bg-navy-950 p-6"><dt class="text-xs uppercase tracking-wider text-slate2-400">Oficina</dt><dd class="mt-2 font-serif text-4xl text-copper-300">Vitacura</dd></div>
   </dl>
 </section>
@@ -316,7 +319,7 @@ def portada():
   <div class="mx-auto max-w-6xl px-6 lg:px-8">
     <p class="eyebrow text-copper-600">Equipo</p>
     <h2 class="mt-4 font-serif text-4xl leading-tight sm:text-5xl">Abogados del estudio</h2>
-    <div class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">{equipo}
+    <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">{equipo}
     </div>
   </div>
 </section>
@@ -454,11 +457,11 @@ def pagina_areas():
         <p class="mt-3 text-sm leading-relaxed text-navy-800/80">{d}</p>
         <span class="mt-5 inline-block text-xs font-semibold uppercase tracking-wider text-copper-600">Ver área →</span>
       </a>""" for s, n, d in AREAS)
-    cuerpo = cabecera(r, "Áreas de práctica", "Áreas de práctica", "Doce áreas para acompañar a empresas, familias y personas, de lo personal a lo empresarial.", [("Áreas", None)]) + f"""
+    cuerpo = cabecera(r, "Áreas de práctica", "Áreas de práctica", "Trece áreas para acompañar a empresas, familias y personas, de lo personal a lo empresarial.", [("Áreas", None)]) + f"""
 <section class="py-20 sm:py-24"><div class="mx-auto grid max-w-6xl gap-6 px-6 sm:grid-cols-2 lg:grid-cols-3 lg:px-8">{tarjetas}</div></section>""" + cta(r)
     ld = {"@context": "https://schema.org", "@graph": [ld_migas([("Áreas de práctica", "areas/")])]}
     return pagina(path, "Áreas de práctica | Salinas & Cía. Abogados",
-                  "Doce áreas de práctica para empresas, familias y personas: societario, inmobiliario, herencias, familia, laboral, consumidor, administrativo y más.", cuerpo, ld)
+                  "Trece áreas de práctica para empresas, familias y personas: societario, inmobiliario, herencias, familia, laboral, penal, consumidor, administrativo y más.", cuerpo, ld)
 
 
 def foto_o_iniciales(r, m, clase="aspect-[4/5] w-full rounded-xl"):
@@ -485,7 +488,7 @@ def pagina_equipo():
     <div class="sm:col-span-2"><h2 class="font-serif text-4xl group-hover:text-copper-600">{socio['nombre']}</h2>
       <p class="mt-4 text-lg leading-relaxed text-navy-800">{PERFILES[socio['slug']]['bio'][0]}</p><span class="mt-6 inline-block text-xs font-semibold uppercase tracking-wider text-copper-600">Ver perfil →</span></div>
   </a>
-  <h2 class="mt-24 font-serif text-4xl">Abogados asociados</h2>
+  <h2 class="mt-24 font-serif text-4xl">Abogados asociados y consultores</h2>
   <p class="mt-4 max-w-2xl leading-relaxed text-navy-800/85">Para materias que requieren experiencia específica, el estudio trabaja con abogados asociados. El cliente mantiene siempre un único punto de contacto con el estudio.</p>
   <div class="mt-10 grid gap-6 lg:grid-cols-2">{asoc}</div>
 </div></section>""" + cta(r)
@@ -758,18 +761,18 @@ UI_EN = [
  ("Próximamente publicaremos artículos sobre esta materia.", "Articles on this area are coming soon."), (">Ir al blog →<", ">Go to the blog →<"),
  (">Otras áreas<", ">Other areas<"), (">Consultar sobre esta materia<", ">Ask about this area<"),
  ('"name": "Áreas de práctica"', '"name": "Practice areas"'),
- ("Doce áreas para acompañar a empresas, familias y personas, de lo personal a lo empresarial.", "Twelve practice areas supporting companies, families and individuals, from the personal to the corporate."),
+ ("Trece áreas para acompañar a empresas, familias y personas, de lo personal a lo empresarial.", "Thirteen practice areas supporting companies, families and individuals, from the personal to the corporate."),
  ("Áreas de práctica | Salinas & Cía. Abogados", "Practice areas | Salinas & Cía. Abogados"), ("Áreas de práctica | Salinas &amp; Cía. Abogados", "Practice areas | Salinas &amp; Cía. Abogados"),
- ("Doce áreas de práctica para empresas, familias y personas: societario, inmobiliario, herencias, familia, laboral, consumidor, administrativo y más.",
-  "Twelve practice areas for companies, families and individuals in Chile: corporate, real estate, inheritance, family, employment, consumer, administrative and more."),
+ ("Trece áreas de práctica para empresas, familias y personas: societario, inmobiliario, herencias, familia, laboral, penal, consumidor, administrativo y más.",
+  "Thirteen practice areas for companies, families and individuals in Chile: corporate, real estate, inheritance, family, employment, criminal, consumer, administrative and more."),
  ("Un equipo de abogados con experiencia en la empresa, el sector inmobiliario y el sector público.", "A team of lawyers with experience in business, real estate and the public sector."),
- (">Socio fundador<", ">Founding partner<"), (">Ver perfil →<", ">View profile →<"), (">Abogados asociados<", ">Associate lawyers<"),
+ (">Socio fundador<", ">Founding partner<"), (">Ver perfil →<", ">View profile →<"), (">Abogados asociados y consultores<", ">Associate and consulting lawyers<"), (">Abogados asociados<", ">Associate lawyers<"),
  ("Para materias que requieren experiencia específica, el estudio trabaja con abogados asociados. El cliente mantiene siempre un único punto de contacto con el estudio.",
   "For matters that require specific experience, the firm works with associate lawyers. Clients always keep a single point of contact with the firm."),
  (">Materias:<", ">Areas:<"), ('"name": "Equipo"', '"name": "Team"'), ("Equipo | Salinas &amp; Cía. Abogados", "Team | Salinas &amp; Cía. Abogados"),
  ("Conozca a los abogados de Salinas &amp; Cía.: experiencia en empresas, sector inmobiliario y sector público.", "Meet the lawyers of Salinas &amp; Cía.: experience in business, real estate and the public sector."),
  (">Materias<", ">Areas<"), (">Formación<", ">Education<"), (">formulario<", ">contact form<"),
- (", socio fundador de Salinas &amp; Cía. Abogados", ", founding partner of Salinas &amp; Cía. Abogados"), (", abogado asociado de Salinas &amp; Cía. Abogados", ", associate lawyer at Salinas &amp; Cía. Abogados"),
+ (", socio fundador de Salinas &amp; Cía. Abogados", ", founding partner of Salinas &amp; Cía. Abogados"), (", abogado asociado de Salinas &amp; Cía. Abogados", ", associate lawyer at Salinas &amp; Cía. Abogados"), ("senior consulting lawyer de Salinas", "senior consulting lawyer at Salinas"),
  ('"name": "El Estudio"', '"name": "The Firm"'),
  ("Salinas &amp; Cía. Abogados fue fundado en 2011 por Sebastián Salinas Fuenzalida para ofrecer una asesoría jurídica eficiente e integral a empresas, empresarios, familias empresarias y personas.",
   "Salinas &amp; Cía. Abogados was founded in 2011 by Sebastián Salinas Fuenzalida to provide efficient and comprehensive legal counsel to companies, entrepreneurs, business families and individuals."),
@@ -924,7 +927,8 @@ Sitio: {BASE}/ · English: {BASE}/en/ · Contacto: {E['correo']} · Instagram: @
 ## Equipo
 - Sebastián Salinas Fuenzalida — socio fundador. Abogado (Corte Suprema, 26/08/2011). Perfil: {BASE}/equipo/sebastian-salinas/ · Sitio personal: https://www.sebastiansalinas.cl/ · Contacto: ssalinas@salinasycia.cl
 - Felipe Lanchares Pérez — abogado asociado; derecho administrativo, regulatorio y ambiental. Perfil: {BASE}/equipo/felipe-lanchares/
-- Luis Guillermo Salinas Correa — abogado asociado; derecho de familia y protección de niños, niñas y adolescentes. Perfil: {BASE}/equipo/luis-salinas-correa/
+- Luis Guillermo Salinas Correa — abogado senior consultor; derecho de familia y protección de niños, niñas y adolescentes. Perfil: {BASE}/equipo/luis-salinas-correa/
+- Karl Pirtzl Saldivar — abogado asociado; derecho penal. Perfil: {BASE}/equipo/karl-pirtzl-saldivar/
 
 ## Blog
 {posts_es}

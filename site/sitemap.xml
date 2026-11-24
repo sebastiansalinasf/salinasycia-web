@@ -130,6 +130,16 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://www.salinasycia.cl/en/areas/derecho-laboral/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.salinasycia.cl/areas/derecho-laboral/"/>
   </url>
+  <url><loc>https://www.salinasycia.cl/areas/derecho-penal/</loc>
+    <xhtml:link rel="alternate" hreflang="es-CL" href="https://www.salinasycia.cl/areas/derecho-penal/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.salinasycia.cl/en/areas/derecho-penal/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.salinasycia.cl/areas/derecho-penal/"/>
+  </url>
+  <url><loc>https://www.salinasycia.cl/en/areas/derecho-penal/</loc>
+    <xhtml:link rel="alternate" hreflang="es-CL" href="https://www.salinasycia.cl/areas/derecho-penal/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.salinasycia.cl/en/areas/derecho-penal/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.salinasycia.cl/areas/derecho-penal/"/>
+  </url>
   <url><loc>https://www.salinasycia.cl/areas/asesoria-legal-permanente/</loc>
     <xhtml:link rel="alternate" hreflang="es-CL" href="https://www.salinasycia.cl/areas/asesoria-legal-permanente/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.salinasycia.cl/en/areas/asesoria-legal-permanente/"/>
@@ -179,6 +189,16 @@
     <xhtml:link rel="alternate" hreflang="es-CL" href="https://www.salinasycia.cl/equipo/luis-salinas-correa/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.salinasycia.cl/en/equipo/luis-salinas-correa/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.salinasycia.cl/equipo/luis-salinas-correa/"/>
+  </url>
+  <url><loc>https://www.salinasycia.cl/equipo/karl-pirtzl-saldivar/</loc>
+    <xhtml:link rel="alternate" hreflang="es-CL" href="https://www.salinasycia.cl/equipo/karl-pirtzl-saldivar/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.salinasycia.cl/en/equipo/karl-pirtzl-saldivar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.salinasycia.cl/equipo/karl-pirtzl-saldivar/"/>
+  </url>
+  <url><loc>https://www.salinasycia.cl/en/equipo/karl-pirtzl-saldivar/</loc>
+    <xhtml:link rel="alternate" hreflang="es-CL" href="https://www.salinasycia.cl/equipo/karl-pirtzl-saldivar/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.salinasycia.cl/en/equipo/karl-pirtzl-saldivar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.salinasycia.cl/equipo/karl-pirtzl-saldivar/"/>
   </url>
   <url><loc>https://www.salinasycia.cl/estudio/</loc>
     <xhtml:link rel="alternate" hreflang="es-CL" href="https://www.salinasycia.cl/estudio/"/>

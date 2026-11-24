@@ -11,6 +11,7 @@ AREAS_EN = [
     ("contratos-y-negociacion", "Contracts and negotiation", "Drafting, review and negotiation of contracts; legal risk."),
     ("litigacion-civil", "Civil litigation", "Civil lawsuits with a strategy defined from the outset."),
     ("recursos-constitucionales", "Constitutional remedies", "Protection and habeas corpus actions before the Courts."),
+    ("derecho-penal", "Criminal law", "Criminal defence, private prosecutions and corporate crime prevention."),
     ("derecho-laboral", "Employment law", "Employees and employers: dismissals, settlements and labour lawsuits."),
     ("derecho-administrativo-y-regulatorio", "Administrative, regulatory and environmental law", "Permits, concessions, environmental law and defence before government agencies."),
     ("asesoria-legal-permanente", "Ongoing legal counsel", "Monthly legal counsel plans for companies and families."),
@@ -25,7 +26,8 @@ VISION_EN = ("To be the trusted law firm of the families and companies who rely 
 EQUIPO_EN = {
     "sebastian-salinas": ("Founding partner", "Business, corporate governance, real estate and litigation"),
     "felipe-lanchares": ("Associate lawyer", "Administrative, regulatory and environmental law"),
-    "luis-salinas-correa": ("Associate lawyer", "Family law and protection of children and adolescents"),
+    "luis-salinas-correa": ("Senior consulting lawyer", "Family law and protection of children and adolescents"),
+    "karl-pirtzl-saldivar": ("Associate lawyer", "Criminal law"),
 }
 
 AREAS_DETALLE_EN = {
@@ -152,6 +154,19 @@ AREAS_DETALLE_EN = {
  "faq": [("I was dismissed and I believe it was unjustified. How long do I have?", "The deadline to sue is short: as a general rule, 60 business days from the dismissal. Consult as soon as possible and do not sign the settlement without reviewing it."),
   ("Can I sign the settlement with a reservation of rights?", "Yes. When signing you can include a written reservation in order to later claim unpaid amounts or unjustified dismissal."),
   ("I am an employer: what should I check before dismissing someone?", "The legal ground, the notice letter and the payments due. A formal mistake can turn a justified dismissal into an unjustified one.")]},
+"derecho-penal": {
+ "h1": "Criminal law",
+ "titulo_seo": "Criminal defence lawyer in Santiago, Chile | Salinas & Cía.",
+ "desc": "Criminal defence, private prosecutions for victims, economic crimes and corporate criminal liability prevention in Santiago, Chile.",
+ "intro": "We advise and represent individuals and companies in criminal proceedings: as defendants, exercising their right to a defence from the first summons, and as victims, pursuing those who harmed them. We also help companies prevent criminal risks.",
+ "servicios": ["Defence of persons under investigation, from the first statement before the Public Prosecutor's Office or the police.",
+  "Private criminal complaints (querellas) on behalf of victims.", "Economic and property crimes: fraud, misappropriation and forgery.",
+  "Detention control, formal charging and precautionary measure hearings.", "Criminal liability of legal entities and crime prevention models.",
+  "Appeals before the Courts of Appeal and the Supreme Court."],
+ "faq": [("I have been summoned by the Public Prosecutor's Office. Should I go with a lawyer?", "You have the right to be assisted by a lawyer from the very first step. It is advisable to consult before giving a statement, to understand your procedural situation and your rights."),
+  ("What is a querella?", "It is the action through which the victim takes an active part in criminal proceedings: requesting investigative steps, taking part in hearings and asking for the person responsible to be convicted."),
+  ("Can a company be criminally liable?", "Yes. Chilean law establishes the criminal liability of legal entities for certain offences. An adequate crime prevention model is the main tool to reduce that risk.")],
+ "vinculado": "karl-pirtzl-saldivar"},
 "asesoria-legal-permanente": {
  "h1": "Ongoing legal counsel",
  "titulo_seo": "Ongoing legal counsel plans | Salinas & Cía. Abogados",
@@ -183,8 +198,14 @@ PERFILES_EN = {
  "enlaces": []},
 "luis-salinas-correa": {
  "titulo_seo": "Luis Guillermo Salinas Correa | Lawyer | Salinas & Cía.",
- "desc": "Associate lawyer at Salinas & Cía. Abogados in family law and the protection of the rights of children and adolescents.",
+ "desc": "Senior consulting lawyer at Salinas & Cía. Abogados in family law and the protection of the rights of children and adolescents.",
  "bio": ["Lawyer practising family law and the protection of the rights of children and adolescents. He works with Salinas & Cía. Abogados on family court cases.",
+         "[PENDIENTE: CV — universidad, año de jura, postgrados y experiencia]"],
+ "formacion": ["[PENDIENTE]"], "enlaces": []},
+"karl-pirtzl-saldivar": {
+ "titulo_seo": "Karl Pirtzl Saldivar | Criminal lawyer | Salinas & Cía.",
+ "desc": "Associate lawyer at Salinas & Cía. Abogados in criminal law: defence, private prosecutions and corporate crime prevention.",
+ "bio": ["Associate lawyer at Salinas & Cía. Abogados in criminal law matters.",
          "[PENDIENTE: CV — universidad, año de jura, postgrados y experiencia]"],
  "formacion": ["[PENDIENTE]"], "enlaces": []},
 }

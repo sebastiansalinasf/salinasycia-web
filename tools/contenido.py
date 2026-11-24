@@ -131,6 +131,19 @@ AREAS_DETALLE = {
  "faq": [("Me despidieron y creo que fue injustificado. ¿Qué plazo tengo?", "El plazo para demandar es breve: por regla general, 60 días hábiles desde el despido. Consulte cuanto antes y no firme el finiquito sin revisarlo."),
   ("¿Puedo firmar el finiquito con reserva de derechos?", "Sí. Al firmar puede dejar una reserva escrita para demandar después lo que no le pagaron o el despido injustificado."),
   ("Soy empleador: ¿qué debo revisar antes de despedir?", "La causal, la carta de aviso y los pagos que corresponden. Un error formal puede transformar un despido justificado en uno injustificado.")]},
+"derecho-penal": {
+ "h1": "Derecho penal",
+ "titulo_seo": "Abogado penalista en Santiago | Salinas & Cía.",
+ "desc": "Defensa penal, querellas para víctimas, delitos económicos y prevención de responsabilidad penal de empresas en Santiago.",
+ "intro": "Asesoramos y representamos a personas y empresas en procesos penales: como imputados, para ejercer su derecho a defensa desde la primera citación, y como víctimas, para perseguir la responsabilidad de quienes les causaron un daño. También ayudamos a las empresas a prevenir riesgos penales.",
+ "servicios": ["Defensa de personas imputadas, desde la primera declaración ante la Fiscalía o la policía.",
+  "Querellas en representación de víctimas.", "Delitos económicos y contra la propiedad: estafas, apropiación indebida y falsificaciones.",
+  "Audiencias de control de detención, formalización y medidas cautelares.", "Responsabilidad penal de las personas jurídicas y modelos de prevención de delitos.",
+  "Recursos ante las Cortes de Apelaciones y la Corte Suprema."],
+ "faq": [("Me citaron a declarar a la Fiscalía. ¿Debo ir con abogado?", "Tiene derecho a ser asistido por un abogado desde la primera actuación. Conviene consultar antes de declarar, para conocer su situación procesal y sus derechos."),
+  ("¿Qué es una querella?", "Es la acción con la que la víctima participa activamente en el proceso penal: puede pedir diligencias, intervenir en las audiencias y solicitar que se condene al responsable."),
+  ("¿Una empresa puede ser responsable penalmente?", "Sí. La ley establece la responsabilidad penal de las personas jurídicas por ciertos delitos. Contar con un modelo de prevención adecuado es la principal herramienta para reducir ese riesgo.")],
+ "vinculado": "karl-pirtzl-saldivar"},
 "asesoria-legal-permanente": {
  "h1": "Asesoría legal permanente",
  "titulo_seo": "Asesoría legal permanente | Salinas & Cía. Abogados",
@@ -164,10 +177,16 @@ PERFILES = {
  "areas": ["derecho-administrativo-y-regulatorio"], "correo": None, "enlaces": []},
 "luis-salinas-correa": {
  "titulo_seo": "Luis Guillermo Salinas Correa | Abogado | Salinas & Cía.",
- "desc": "Abogado asociado de Salinas & Cía. Abogados en derecho de familia y protección de derechos de niños, niñas y adolescentes.",
+ "desc": "Abogado senior consultor de Salinas & Cía. Abogados en derecho de familia y protección de derechos de niños, niñas y adolescentes.",
  "bio": ["Abogado con práctica en derecho de familia y en la protección de derechos de niños, niñas y adolescentes. Colabora con Salinas & Cía. Abogados en causas judiciales de familia.",
          "[PENDIENTE: CV — universidad, año de jura, postgrados y experiencia]"],
  "formacion": ["[PENDIENTE]"], "areas": ["derecho-de-familia"], "correo": None, "enlaces": []},
+"karl-pirtzl-saldivar": {
+ "titulo_seo": "Karl Pirtzl Saldivar | Abogado penalista | Salinas & Cía.",
+ "desc": "Abogado asociado de Salinas & Cía. Abogados en derecho penal: defensa, querellas y prevención de delitos en la empresa.",
+ "bio": ["Abogado asociado de Salinas & Cía. Abogados en materias de derecho penal.",
+         "[PENDIENTE: CV — universidad, año de jura, postgrados y experiencia]"],
+ "formacion": ["[PENDIENTE]"], "areas": ["derecho-penal"], "correo": None, "enlaces": []},
 }
 
 POSTS = [
