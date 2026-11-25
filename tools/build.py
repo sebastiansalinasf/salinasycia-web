@@ -47,7 +47,7 @@ EQUIPO = [
     {"slug": "felipe-lanchares", "nombre": "Felipe Lanchares Pérez", "cargo": "Abogado asociado",
      "materias": "Administrativo, regulatorio y ambiental", "foto": "assets/felipe-lanchares-perez.webp"},
     {"slug": "luis-salinas-correa", "nombre": "Luis Guillermo Salinas Correa", "cargo": "Abogado senior consultor",
-     "materias": "Familia y protección de niños, niñas y adolescentes", "foto": None},
+     "materias": "Familia y protección de niños, niñas y adolescentes", "foto": "assets/luis-salinas-correa.webp"},
     {"slug": "karl-pirtzl-saldivar", "nombre": "Karl Pirtzl Saldivar", "cargo": "Abogado asociado",
      "materias": "Derecho penal", "foto": "assets/karl-pirtzl-saldivar.webp"},
 ]
