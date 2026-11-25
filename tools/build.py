@@ -6,7 +6,7 @@ Al lanzar: BORRADOR = False, reconstruir y publicar.
 """
 import json, os, html
 
-BORRADOR = True
+BORRADOR = False
 BASE = "https://www.salinasycia.cl"
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 SITE = os.path.join(ROOT, "site")
