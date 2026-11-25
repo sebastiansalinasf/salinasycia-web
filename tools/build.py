@@ -43,7 +43,7 @@ AREAS = [
 
 EQUIPO = [
     {"slug": "sebastian-salinas", "nombre": "Sebastián Salinas Fuenzalida", "cargo": "Socio fundador",
-     "materias": "Empresa, gobierno corporativo, inmobiliario y litigación", "foto": "assets/sebastian-salinas-fuenzalida.jpg"},
+     "materias": "Empresa, gobierno corporativo, inmobiliario y litigación", "foto": "assets/sebastian-salinas-fuenzalida.webp"},
     {"slug": "felipe-lanchares", "nombre": "Felipe Lanchares Pérez", "cargo": "Abogado asociado",
      "materias": "Administrativo, regulatorio y ambiental", "foto": "assets/felipe-lanchares-perez.webp"},
     {"slug": "luis-salinas-correa", "nombre": "Luis Guillermo Salinas Correa", "cargo": "Abogado senior consultor",
@@ -228,7 +228,7 @@ def portada():
     otras = " · ".join(f'<a class="hover:text-copper-600" href="{r}{P}areas/{s}/">{n}</a>' for s, n, d in AREAS[6:])
 
     def tarjeta(m):
-        foto = (f'<img src="{r}{m["foto"]}" alt="{e(m["nombre"])}, {m["cargo"].lower()} de Salinas &amp; Cía. Abogados" width="976" height="1300" loading="lazy" class="aspect-[4/5] w-full rounded-xl object-cover object-top" />'
+        foto = (f'<img src="{r}{m["foto"]}" alt="{e(m["nombre"])}, {m["cargo"].lower()} de Salinas &amp; Cía. Abogados" width="900" height="1200" loading="lazy" class="aspect-[4/5] w-full rounded-xl object-cover object-top" />'
                 if m["foto"] else
                 f'<div class="relative flex aspect-[4/5] w-full items-center justify-center rounded-xl bg-navy-900 font-serif text-5xl text-copper-300" aria-hidden="true">{iniciales(m["nombre"])}<span class="absolute bottom-4 font-sans text-xs text-slate2-400">Foto pendiente</span></div>')
         return f"""
@@ -466,7 +466,7 @@ def pagina_areas():
 
 def foto_o_iniciales(r, m, clase="aspect-[4/5] w-full rounded-xl"):
     if m["foto"]:
-        return f'<img src="{r}{m["foto"]}" alt="{e(m["nombre"])}, {m["cargo"].lower()} de Salinas &amp; Cía. Abogados" width="976" height="1300" loading="lazy" class="{clase} object-cover object-top" />'
+        return f'<img src="{r}{m["foto"]}" alt="{e(m["nombre"])}, {m["cargo"].lower()} de Salinas &amp; Cía. Abogados" width="900" height="1200" loading="lazy" class="{clase} object-cover object-top" />'
     return f'<div class="relative flex {clase} items-center justify-center bg-navy-900 font-serif text-5xl text-copper-300" aria-hidden="true">{iniciales(m["nombre"])}<span class="absolute bottom-4 font-sans text-xs text-slate2-400">Foto pendiente</span></div>'
 
 
@@ -689,7 +689,7 @@ def pagina_post(p):
     cuerpo = cabecera(r, f"{NOMBRE_AREA[p['area']]} · {fecha_larga(p['fecha'])}", p["titulo"], None, [("Blog", "blog/"), (p["titulo"], None)]) + f"""
 <section class="py-20"><div class="mx-auto max-w-3xl px-6 lg:px-8">
   <div class="flex items-center gap-4 border-b border-slate2-100 pb-6">
-    <img src="{r}assets/sebastian-salinas-fuenzalida.jpg" alt="Sebastián Salinas Fuenzalida" width="976" height="1300" class="h-14 w-14 rounded-full object-cover object-top" />
+    <img src="{r}assets/sebastian-salinas-avatar.webp" alt="Sebastián Salinas Fuenzalida" width="200" height="200" class="h-14 w-14 rounded-full object-cover" />
     <p class="text-sm"><a class="font-semibold hover:text-copper-600" href="{r}{P}equipo/sebastian-salinas/">Sebastián Salinas Fuenzalida</a><br /><span class="text-navy-800/70">Socio fundador de Salinas &amp; Cía. Abogados</span></p>
   </div>
   <div class="articulo mt-8 space-y-5 text-lg leading-relaxed text-navy-800">{p['html']}</div>
