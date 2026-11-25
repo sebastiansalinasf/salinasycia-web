@@ -199,15 +199,13 @@ PERFILES_EN = {
 "luis-salinas-correa": {
  "titulo_seo": "Luis Guillermo Salinas Correa | Lawyer | Salinas & Cía.",
  "desc": "Senior consulting lawyer at Salinas & Cía. Abogados in family law and the protection of the rights of children and adolescents.",
- "bio": ["Lawyer practising family law and the protection of the rights of children and adolescents. He works with Salinas & Cía. Abogados on family court cases.",
-         "[PENDIENTE: CV — universidad, año de jura, postgrados y experiencia]"],
- "formacion": ["[PENDIENTE]"], "enlaces": []},
+ "bio": ["Lawyer practising family law and the protection of the rights of children and adolescents. He works with Salinas & Cía. Abogados on family court cases."],
+ "formacion": [], "enlaces": []},
 "karl-pirtzl-saldivar": {
  "titulo_seo": "Karl Pirtzl Saldivar | Criminal lawyer | Salinas & Cía.",
  "desc": "Associate lawyer at Salinas & Cía. Abogados in criminal law: defence, private prosecutions and corporate crime prevention.",
- "bio": ["Associate lawyer at Salinas & Cía. Abogados in criminal law matters.",
-         "[PENDIENTE: CV — universidad, año de jura, postgrados y experiencia]"],
- "formacion": ["[PENDIENTE]"], "enlaces": []},
+ "bio": ["Associate lawyer at Salinas & Cía. Abogados in criminal law matters."],
+ "formacion": [], "enlaces": []},
 }
 
 POSTS_EN = {
@@ -246,5 +244,5 @@ POSTS_EN = {
 <h2>Three signs your company needs one</h2>
 <ol><li>There are children or nephews and nieces with different expectations about the company.</li><li>The bylaws do not say what happens to the shares if a partner dies or wants to leave.</li><li>Important decisions depend on a single person.</li></ol>
 <p>At Salinas &amp; Cía. Abogados we support business families in drafting the protocol and implementing it in bylaws, agreements and estate planning.</p>""",
- "fuentes": [("Civil Code, arts. 1167 et seq. and 1184; Law 18,046, art. 14 [CONFIRMAR referencias]", None)]},
+ "fuentes": [("Civil Code, arts. 1167 et seq. and 1184; Law 18,046, art. 14", None)]},
 }

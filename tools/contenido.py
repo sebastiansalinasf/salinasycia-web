@@ -178,15 +178,13 @@ PERFILES = {
 "luis-salinas-correa": {
  "titulo_seo": "Luis Guillermo Salinas Correa | Abogado | Salinas & Cía.",
  "desc": "Abogado senior consultor de Salinas & Cía. Abogados en derecho de familia y protección de derechos de niños, niñas y adolescentes.",
- "bio": ["Abogado con práctica en derecho de familia y en la protección de derechos de niños, niñas y adolescentes. Colabora con Salinas & Cía. Abogados en causas judiciales de familia.",
-         "[PENDIENTE: CV — universidad, año de jura, postgrados y experiencia]"],
- "formacion": ["[PENDIENTE]"], "areas": ["derecho-de-familia"], "correo": None, "enlaces": []},
+ "bio": ["Abogado con práctica en derecho de familia y en la protección de derechos de niños, niñas y adolescentes. Colabora con Salinas & Cía. Abogados en causas judiciales de familia."],
+ "formacion": [], "areas": ["derecho-de-familia"], "correo": None, "enlaces": []},
 "karl-pirtzl-saldivar": {
  "titulo_seo": "Karl Pirtzl Saldivar | Abogado penalista | Salinas & Cía.",
  "desc": "Abogado asociado de Salinas & Cía. Abogados en derecho penal: defensa, querellas y prevención de delitos en la empresa.",
- "bio": ["Abogado asociado de Salinas & Cía. Abogados en materias de derecho penal.",
-         "[PENDIENTE: CV — universidad, año de jura, postgrados y experiencia]"],
- "formacion": ["[PENDIENTE]"], "areas": ["derecho-penal"], "correo": None, "enlaces": []},
+ "bio": ["Abogado asociado de Salinas & Cía. Abogados en materias de derecho penal."],
+ "formacion": [], "areas": ["derecho-penal"], "correo": None, "enlaces": []},
 }
 
 POSTS = [
@@ -225,5 +223,5 @@ POSTS = [
 <h2>Tres señales de que su empresa lo necesita</h2>
 <ol><li>Hay hijos o sobrinos con expectativas distintas sobre la empresa.</li><li>Los estatutos no dicen qué pasa con las acciones si un socio muere o quiere salir.</li><li>Las decisiones importantes dependen de una sola persona.</li></ol>
 <p>En Salinas &amp; Cía. Abogados acompañamos a familias empresarias en la elaboración del protocolo y en su implementación en estatutos, pactos y planificación sucesoria.</p>""",
- "fuentes": [("Código Civil, arts. 1167 y ss. y 1184; Ley 18.046, art. 14 [CONFIRMAR referencias]", None)]},
+ "fuentes": [("Código Civil, arts. 1167 y ss. y 1184; Ley 18.046, art. 14", None)]},
 ]

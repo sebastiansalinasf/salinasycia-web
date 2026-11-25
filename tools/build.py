@@ -21,7 +21,7 @@ ESTUDIO = {
     "ciudad": "Santiago",
     "instagram": "https://www.instagram.com/salinasyciaabogados/",
     "correo": "contacto@salinasycia.cl",
-    "telefono": None,    # [PENDIENTE]
+    "telefono": "+56 9 7767 1230",
 }
 
 # Áreas de práctica: slug, nombre, línea breve. Las 6 primeras se destacan en portada.
@@ -154,7 +154,7 @@ def header(path):
 def contacto_datos(dark=True):
     E = ESTUDIO
     correo = f'<a href="mailto:{E["correo"]}" class="hover:text-copper-300">{E["correo"]}</a>' if E["correo"] else PEND.format("correo general")
-    tel = E["telefono"] or PEND.format("teléfono / WhatsApp")
+    tel = f'<a href="tel:{E["telefono"].replace(" ", "")}" class="hover:text-copper-300">{E["telefono"]}</a>' if E["telefono"] else PEND.format("teléfono")
     return f"""<ul class="space-y-3 text-sm">
       <li><span class="text-slate2-400">Dirección:</span> {E['calle']}, {E['comuna']}, {E['ciudad']}</li>
       <li><span class="text-slate2-400">Correo:</span> {correo}</li>
@@ -207,6 +207,7 @@ def jsonld_estudio():
         "knowsAbout": [a[1] for a in AREAS],
         "sameAs": [E["instagram"]],
         "email": E["correo"],
+        "telephone": E["telefono"].replace(" ", ""),
         "image": BASE + "/assets/og-salinasycia.jpg",
     }
 
@@ -516,8 +517,7 @@ def pagina_perfil(slug):
   </div>
   <div class="lg:col-span-8">
     <div class="space-y-5 text-lg leading-relaxed text-navy-800">{bio}</div>
-    <h2 class="mt-14 font-serif text-3xl">Formación</h2>
-    <ul class="mt-4 text-navy-800">{form}</ul>
+    {f'<h2 class="mt-14 font-serif text-3xl">Formación</h2><ul class="mt-4 text-navy-800">{form}</ul>' if form else ''}
   </div>
 </div></section>""" + cta(r)
     person = {"@type": "Person", "name": m["nombre"], "jobTitle": m["cargo"], "worksFor": {"@id": BASE + "/#estudio"}, "url": U(path)}
@@ -574,7 +574,7 @@ def pagina_publicaciones():
 <section class="py-20 sm:py-24"><div class="mx-auto max-w-4xl space-y-8 px-6 lg:px-8">
   <article class="rounded-2xl bg-white p-8 ring-1 ring-slate2-100"><p class="eyebrow text-copper-600">Caso · 2023</p>
     <h2 class="mt-2 font-serif text-2xl">Reclamo contra el Conservador de Bienes Raíces de Pozo Almonte</h2>
-    <p class="mt-3 leading-relaxed text-navy-800/85">El tribunal acogió el reclamo y ordenó inscribir una compraventa, porque la medida precautoria que afectaba al inmueble se decretó después de solicitada la inscripción. Causa patrocinada por Sebastián Salinas Fuenzalida. {pend('[PENDIENTE: rol de la causa y autorización para publicarla]')}</p>
+    <p class="mt-3 leading-relaxed text-navy-800/85">El tribunal acogió el reclamo y ordenó inscribir una compraventa, porque la medida precautoria que afectaba al inmueble se decretó después de solicitada la inscripción. Causa patrocinada por Sebastián Salinas Fuenzalida.</p>
     <a class="mt-4 inline-block text-sm font-semibold text-copper-600 hover:text-copper-500" href="https://www.diarioconstitucional.cl/2023/02/14/conservador-debe-inscribir-escritura-de-compraventa-si-la-medida-precautoria-que-afecta-al-bien-objeto-del-contrato-fue-decretada-despues-de-que-se-solicitara-la-inscripcion/" target="_blank" rel="noopener">Comentario del fallo en Diario Constitucional (14/02/2023) ↗</a></article>
   <article class="rounded-2xl bg-white p-8 ring-1 ring-slate2-100"><p class="eyebrow text-copper-600">Artículo · 2007</p>
     <h2 class="mt-2 font-serif text-2xl">Enriquecimiento sin causa en los cuasicontratos. El concubinato: evolución y tendencias jurisprudenciales</h2>
@@ -643,7 +643,6 @@ def pagina_privacidad():
     r = rel(path)
     cuerpo = cabecera(r, "Privacidad", "Política de privacidad", None, [("Privacidad", None)]) + f"""
 <section class="py-20"><div class="mx-auto max-w-3xl space-y-5 px-6 leading-relaxed text-navy-800 lg:px-8">
-  <p>{pend('[PENDIENTE: revisión del texto por el estudio antes de publicar]')}</p>
   <p><strong>Responsable.</strong> {ESTUDIO['razon_social']}, con domicilio en {ESTUDIO['calle']}, {ESTUDIO['comuna']}, {ESTUDIO['ciudad']}.</p>
   <p><strong>Datos que recogemos.</strong> Los que usted nos entrega en el formulario de contacto: nombre, correo electrónico, teléfono (opcional), área de su consulta y mensaje.</p>
   <p><strong>Para qué los usamos.</strong> Solo para responder su consulta y, si usted lo decide, coordinar una reunión o una propuesta de servicios. No los usamos para publicidad ni los compartimos con terceros, salvo el proveedor que aloja el sitio y procesa el formulario.</p>
